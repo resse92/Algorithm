@@ -1,8 +1,11 @@
 #include <stdio.h>
 
-int main(int argc, char *argv[]) {
-	
-}
+#include <iostream>  
+#include <algorithm>  
+#include <vector>  
+#include <iterator>  
+  
+using namespace std;  
 
 /* 字符串旋转 */
 
@@ -20,6 +23,7 @@ void LeftRotateString1(char *s, int n, int m) {
 	while (m--) {
 		LeftShiftOne(s, n);
 	}
+	cout << s << endl;
 }
 
 //2. 三步反转 时间复杂
@@ -54,10 +58,10 @@ bool StringContain1(string &a, string &b) {
 
 //2. 排序后轮询
 bool StringContain2(string &a, string &b) {
-	Sort(a.begin(), a.end());
+	sort(a.begin(), a.end());
 	sort(b.begin(), b.end());
 	
-	for (int pa = 0, pb = 0; pb < b.length; ) {
+	for (int pa = 0, pb = 0; pb < b.length(); ) {
 		while ((pa < a.length()) & (a[pa] > b[pb])) {
 			++pa;
 		}
@@ -70,7 +74,7 @@ bool StringContain2(string &a, string &b) {
 
 //3. 素数相乘  如果字符串很长,造成数字很大,容易溢出,不可行
 bool StringContain3(string &a, string &b) {
-	const int p[26] = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31
+	const int p[26] = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31,
 	37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101};
 	
 	int f = 1;
@@ -97,7 +101,7 @@ bool StringContain4(string &a, string &b) {
 		hash |= (1 << (a[i] - 'A'));
 	}
 	for (int i = 0; i < b.length(); ++i) {
-		if ((hash & (1 << b[i] - 'A'))) == 0) {
+		if ((hash & (1 << (b[i] - 'A'))) == 0) {
 			return false;
 		}
 	}
@@ -116,12 +120,12 @@ void CalcAllPermutation(char *perm, int from, int to) {
 	}
 	
 	if (from == to) {
-		for (int i = 0;i <= to;i++) {
-			count << perm[i];
+		for (int i = 0;i <= to; i++) {
+			cout << perm[i];
 		}
-		count << endl;
+		cout << endl;
 	} else {
-		for (int j == from; j <= to, j ++) {
+		for (int j = from; j <= to; j ++) {
 			swap(perm[j], perm[to]); // STL库函数, void swap(int &a, int &b)
 			CalcAllPermutation(perm, from + 1, to);
 			swap(perm[j], perm[from]);
@@ -160,7 +164,7 @@ bool CalcAllPermutation2(char *perm, int num) {
 int StrToInt(const char *str) {
 	static const int MAX_INT = (int)((unsigned)~0 >> 1);
 	static const int MIN_INT = -(int)((unsigned)~0 >> 1) - 1;
-	
+	unsigned int n = 0;
 	//判断是否为空
 	if (str == 0) {
 		return 0;
@@ -288,25 +292,32 @@ int LongestPalidrome1(const char *s, int n) {
 // 2. Manacher算法, 通过每个字符的两边都插入一个特殊符号,将所有可能的奇数或偶数长度都变成奇数
 // 为了处理越界问题,可以在首位加上一个特殊字符(如$)
 
-void Manachere() {
-	int i;
-	int mx = 0; // mx = id + p[id], 最大回文子串的边界
-	int id; // 最大回文子串的中心位置
-	for (i = 1; i < n; i++) {
-		// mx > 1时,P[i] >= Min(P[2 * id - i], mx -i)
-		if (mx > i) {
-			p[i] = MIN(p[2 * id - i], mx - i);
-		} else {
-			// mx < 1时, 无法对p[i]做更多的假设,直接让p[i] = 1;
-			p[i] = 1;
-		}
-		
-		while (s[i] + p[i] == s[i - p[i]]) {
-			p[i]++;
-		}
-		if (p[i] + i > max) {
-			mx = p[i] + i;
-			id = i;
-		}
-	}
+//void Manachere(const char *s, int n) {
+//	int i;
+//	int mx = 0; // mx = id + p[id], 最大回文子串的边界
+//	int id; // 最大回文子串的中心位置
+//	for (i = 1; i < n; i++) {
+//		// mx > 1时,P[i] >= Min(P[2 * id - i], mx -i)
+//		if (mx > i) {
+//			p[i] = MIN(p[2 * id - i], mx - i);
+//		} else {
+//			// mx < 1时, 无法对p[i]做更多的假设,直接让p[i] = 1;
+//			p[i] = 1;
+//		}
+//		
+//		while (s[i] + p[i] == s[i - p[i]]) {
+//			p[i]++;
+//		}
+//		if (p[i] + i > max) {
+//			mx = p[i] + i;
+//			id = i;
+//		}
+//	}
+//}
+
+// 第一章练习题
+// 1. 字符串反转
+
+int main(int argc, char *argv[]) {
+	
 }
