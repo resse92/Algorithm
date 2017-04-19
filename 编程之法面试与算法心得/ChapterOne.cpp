@@ -317,7 +317,16 @@ int LongestPalidrome1(const char *s, int n) {
 
 // 第一章练习题
 // 1. 字符串反转
+void StringReverse(string s) {
+	int length = s.length();
+	char result[length];
+	
+	for (int x = 0; x < length; x++) {
+		result[x] = s[length - 1 - x];
+	}
+	cout << result << endl;
+}
 
 int main(int argc, char *argv[]) {
-	
+	StringReverse("July");
 }
