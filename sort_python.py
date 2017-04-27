@@ -7,102 +7,96 @@
 # 步骤: 比较相邻的元素,如果前一个比后一个大,则调换两个位置,第一轮完了之后,最后的数是最大的,第二轮继续,除了最后一个数,一次循环下去
 
 def exchange(array, index1, index2):
-    temp = array[index1]
-    array[index1] = array[index2]
-    array[index2] = temp
+    # temp = array[index1]
+    # array[index1] = array[index2]
+    # array[index2] = temp
+    array[index1], array[index2] = array[index2], array[index1]
 
-def bubbleSort(numArray):
+def bubble_sort1(numArray):
     x = 1
     i = 0
-    while i < (len(numArray) - x) :
-        if (numArray[i] > numArray[i + 1]):
-            exchange(numArray, i, i + 1)
+    length = len(numArray)
+
+    for i in range(1, length):
+        for j in range(0, length - i):
+            if numArray[j] > numArray[j + 1]:
+                exchange(numArray, j, j + 1)
     print(numArray)
+
+def bubble_sort2(lists):
+    # 冒泡排序
+    count = len(lists)
+    for i in range(0, count):
+        for j in range(i + 1, count):
+            if lists[i] > lists[j]:
+                lists[i], lists[j] = lists[j], lists[i]
+    return lists
 
 # 鸡尾酒排序(定向冒泡排序)
 # 冒泡排序的一种改进算法, 从低到高排序后,从高到低开始排序
-def cocktailSort(numArray):
+def cocktail_sort(numArray):
     length = len(numArray)
     left = 0
     right = length - 1
     while left < right:
-        i = left
-        while i < right:
+        for i in range(left, right): # 前半轮,将最大的放在右边
             if numArray[i] > numArray[i + 1]:
                 exchange(numArray, i, i + 1)
-            i += 1
-
         right -= 1
 
-        i = right
-        while i > left:
-            if numArray[i - 1] > numArray[i]:
-                exchange(numArray, i, i + 1)
-            i -= 1
+        for j in reversed(range(left+1, right+1)): # 后半轮,将最小的放在左边
+            if numArray[j - 1] > numArray[j]:
+                exchange(numArray, j - 1, j)
         left += 1
 
 # 选择排序
 # 两个序列,从未排序序列中找到最小值,放入排序序列第一个,再从剩下未排序序列中找最小值放入排序序列最后,依次这样
-def selectionSort(numArray):
+def selection_sort(numArray):
     length = len(numArray)
     i = 0
     j = length - 1
-    while i <= length - 2: # 已排序序列的末尾
+    for i in range(i, length): # 已排序序列的末尾
         minx = i
-        while j <= length - 2: # 未排序序列
-            if numArray[j] < numArray[minx]: # 依次找出未排序序列中的最小值,存放到已排序序列的末尾
+        for j in range(i, length): # 未排序序列
+            if numArray[j] < numArray[minx]:
                 minx = j
-            j += 1
 
-        if min != i:
-            exchange(numArray, min ,i) # 该操作很有可能把稳定性打乱,所以选择排序是不稳定的排序算法
-
-        i += 1
+        if minx != i:
+            exchange(numArray, minx, i)
 
 # 插入排序
 # 从第一个元素开始,该元素可以认为已经被排序,取出下一个元素,在1已经排序的元素序列中从后向前扫描
 # 如果该元素(已排序)大于新元素,将该元素移动到下一位置,重复这一步直到已排序的元素小于或者等于新元素的位置
 # 将新元素插入到该位置后,再重复以上步骤
-def insertSort(numArray):
+def insert_sort(numArray):
     length = len(numArray)
-    i = 1
-    j = 0
-    get = 0
-
-    while i < length: #类似抓扑克排序
-        get = numArray[i] # 右手抓一张扑克牌
+    for i in range(1, length):
+        get = numArray[i] # 类似抓扑克排序
         j = i - 1 # 拿在左手上的牌总是排序好的
         while (j >= 0) and (numArray[j] > get): # 将抓到的牌与手牌从左向右进行比较
             numArray[j + 1] = numArray[j] # 如果该手牌比抓到的牌大,将其右移
             j -= 1
-
         numArray[j + 1] = get # 直到该手牌比抓到的牌小(或者相等),将抓到的牌插入手牌右边(相等元素的相对次序未变,所以是稳定的)
-        i += 1
 
 # 二分插入排序(插入排序的改进)
 # 可以用二分查找发减少比较操作的数目
-def binarySearchInsertSelect(numArray):
+def binary_search_insert_select(numArray):
     n = len(numArray)
-    i = 1
-    j = i -1
     right = 0
     left = 0
-    while i < n:
+    for i in range(0, n):
         get = numArray[i]
         left = 0
         right = i - 1
         while left <= right:
-            middle = (left + right) / 2
+            middle = int((left + right) / 2)
             if numArray[middle] > get:
                 right = middle - 1
             else:
                 left = middle + 1
-
-            j = i - 1
-            while j >= left:
-                numArray[j + 1] = numArray[j]
-                j += 1
-        i += 1
+                
+        for j in reversed(range(left, i)):
+            numArray[j + 1] = numArray[j]
         numArray[left] = get
 
 # 希尔排序(插入排序的更高效改进,又名递减增量排序,不稳定)
@@ -168,6 +162,7 @@ def merge(left, right):
 def adjustHeap(lists, i, size):
     lchild = 2 * i + 1
     rchild = 2 * i + 2
+    max = 0
     max = i
     if i < size / 2:
         if lchild < size and lists[lchild] > lists[max]:
@@ -177,13 +172,47 @@ def adjustHeap(lists, i, size):
         if max != i:
             lists[max], lists[i] = lists[i], lists[max]
 
-
 def buildHeap(lists, size):
     for i in range(0, (size/2))[::-1]:
+        adjustHeap(lists, i, size)
 
 def heapSort(lists):
     size = len(lists)
     buildHeap(lists, size)
     for i in range(0, size)[::-1]:
-        Lists[0], lists[i] = lists[i], lists[0]
-        adjustHeap(lists, 0 i)
+        lists[0], lists[i] = lists[i], lists[0]
+        adjustHeap(lists, 0, i)
+
+# 快速排序
+# 采用分而治之的策略,把一个序列分成两个子序列
+# 1. 从序列中挑出一个元素作为"基准"(pivot)
+# 2. 把所有比基准值小的元素放在基准面前,所有比基准大的值放在后面(相同的数放任意一边), 这个称为分区操作
+# 3. 对每个分区递归的进行步骤1~3,递归结束的条件是0或1,这时整体已经排好序了
+def quick_sort(lists, left, right):
+    # 快速排序
+    if left >= right:
+        return lists
+    key = lists[left]
+    low = left
+    high = right
+    while left < right:
+        while left < right and lists[right] >= key:
+            right -= 1
+        lists[left] = lists[right]
+        while left < right and lists[left] <= key:
+            left += 1
+        lists[right] = lists[left]
+    lists[right] = key
+    quick_sort(lists, low, left - 1)
+    quick_sort(lists, left + 1, high)
+    return lists
+import random
+def main():
+    ha = []
+    for i in range(0, 40):
+        ha.append(random.randint(0,99))
+    print(ha)
+    binary_search_insert_select(ha)
+    print(ha)
+
+main()
