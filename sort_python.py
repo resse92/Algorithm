@@ -94,7 +94,6 @@ def binary_search_insert_select(numArray):
                 right = middle - 1
             else:
                 left = middle + 1
-                
         for j in reversed(range(left, i)):
             numArray[j + 1] = numArray[j]
         numArray[left] = get
@@ -223,7 +222,6 @@ def radix_sort(lists, radix=10):
             lists += z
             del z[:]
     return lists
-
 import random
 def main():
     ha = []
