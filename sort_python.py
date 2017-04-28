@@ -102,27 +102,25 @@ def binary_search_insert_select(numArray):
 # 希尔排序(插入排序的更高效改进,又名递减增量排序,不稳定)
 # 通过将比较的全部元素分为几个区域来提升插入排序的性能
 
-def shellSort(numArray):
-    n = len(numArray)
-    i = 0
-    j = 0
-    get = 0
-    h = 0
-
-    while h <= n: # 生成初始增量
-        h = 3 * h + 1
-
-    i = h
-    while h >= 1:
-        while i < n:
-            j = i - h
-            get = numArray[i]
-            while (j >= 0) and (numArray[j] > get):
-                numArray[j + h] = numArray[j]
-                j = j - h
-            numArray[j + h] = get
-            i += 1
-        h = (h - 1) / 3 # 递减增量
+def shell_sort(lists):
+    # 希尔排序
+    count = len(lists)
+    step = 2
+    group = count // step # //为floor除法,不保留小数
+    while group > 0:
+        for i in range(0, group):
+            j = i + group
+            while j < count:
+                k = j - group
+                key = lists[j]
+                while k >= 0:
+                    if lists[k] > key:
+                        lists[k + group] = lists[k]
+                        lists[k] = key
+                    k -= group
+                j += group
+        group //= step
+    return lists
 
 # 归并排序
 # 指将两个已经排序的序列合并成一个序列的操作
@@ -131,12 +129,12 @@ def shellSort(numArray):
 # 3. 比较两个指针所指向的元素,选择相对小的元素放入合并空间,并移动到下一位置
 # 4. 重复第三部,直到到达序列尾
 # 5. 将另一序列剩下的所有元素直接复制到合并序列尾
-def mergeSort(numArray):
+def merge_sort(numArray):
     if len(numArray) <= 1:
         return numArray
-    num = len(numArray) / 2
-    left = mergeSort(numArray[:num])
-    right = mergeSort(num[num:])
+    num = len(numArray) // 2
+    left = merge_sort(numArray[:num])
+    right = merge_sort(numArray[num:])
     return merge(left, right)
 
 def merge(left, right):
@@ -159,29 +157,29 @@ def merge(left, right):
 # 2. 把堆顶元素(最大值)和堆尾元素互换
 # 3. 把堆的尺寸缩小1,并调用heapify(A, 0)从新的对顶元素开始进行堆调整
 # 4. 重复步骤2,知道堆的尺寸为1
-def adjustHeap(lists, i, size):
+def adjust_heap(lists, i, size):
     lchild = 2 * i + 1
     rchild = 2 * i + 2
-    max = 0
-    max = i
-    if i < size / 2:
-        if lchild < size and lists[lchild] > lists[max]:
-            max = lchild
-        if rchild < size and lists[rchild] > lists[max]:
-            max = rchild
-        if max != i:
-            lists[max], lists[i] = lists[i], lists[max]
+    maxx = i
+    if i < size // 2:
+        if lchild < size and lists[lchild] > lists[maxx]:
+            maxx = lchild
+        if rchild < size and lists[rchild] > lists[maxx]:
+            maxx = rchild
+        if maxx != i:
+            lists[maxx], lists[i] = lists[i], lists[maxx]
+            adjust_heap(lists, maxx, size)
 
-def buildHeap(lists, size):
-    for i in range(0, (size/2))[::-1]:
-        adjustHeap(lists, i, size)
+def build_heap(lists, size):
+    for i in range(0, (size//2))[::-1]:
+        adjust_heap(lists, i, size)
 
-def heapSort(lists):
+def heap_sort(lists):
     size = len(lists)
-    buildHeap(lists, size)
+    build_heap(lists, size)
     for i in range(0, size)[::-1]:
         lists[0], lists[i] = lists[i], lists[0]
-        adjustHeap(lists, 0, i)
+        adjust_heap(lists, 0, i)
 
 # 快速排序
 # 采用分而治之的策略,把一个序列分成两个子序列
@@ -206,13 +204,34 @@ def quick_sort(lists, left, right):
     quick_sort(lists, low, left - 1)
     quick_sort(lists, left + 1, high)
     return lists
+
+# 基数排序
+
+# 基数排序（radix sort）属于“分配式排序”（distribution sort），
+# 又称“桶子法”（bucket sort）或bin sort，
+# 顾名思义，它是透过键值的部份资讯，将要排序的元素分配至某些“桶”中，藉以达到排序的作用，
+# 基数排序法是属于稳定性的排序，其时间复杂度为O (nlog(r)m)，其中r为所采取的基数，而m为堆数，在某些时候，基数排序法的效率高于其它的稳定性排序法。
+import math
+def radix_sort(lists, radix=10):
+    k = int(math.ceil(math.log(max(lists), radix)))
+    bucket = [[] for i in range(radix)]
+    for i in range(1, k+1):
+        for j in lists:
+            bucket[j // (radix**(i-1)) % (radix**i)].append(j)
+        del lists[:]
+        for z in bucket:
+            lists += z
+            del z[:]
+    return lists
+
 import random
 def main():
     ha = []
     for i in range(0, 40):
         ha.append(random.randint(0,99))
     print(ha)
-    binary_search_insert_select(ha)
+    # quick_sort(ha)
+    print(radix_sort(ha))
     print(ha)
 
 main()
