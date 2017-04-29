@@ -33,11 +33,13 @@ void QuickSelect(int s[], int k, int left, int right) {
 				}
 			}
 		}
-	} else {
+ 	} else {
 		// 如果 left > right ,利用插入排序调整一下
 		InsertSort(s + left, right - left + 1);
 	}
 }
+
+// 寻找和为定值的两个数
 
 int main(int argc, char *argv[]) {
 	int s[] = [1, 2, 3, 4, 5, 6];
