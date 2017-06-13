@@ -8,7 +8,7 @@ using namespace std;
 void QuickSelect(int s[], int k, int left, int right) {
 	int i, j;
 	int pivot;
-	
+
 	if (left <= right) {
 		pivot = median3(s, left, right) {
 			// 取三个数的中值作为主元,可以很大程度上避免最坏情况
@@ -16,16 +16,16 @@ void QuickSelect(int s[], int k, int left, int right) {
 			while (1) {
 				while (s[++i] < pivot) {};
 				while (s[--j] < pivot) {};
-				
+
 				if (i < j) {
 					swap(s[i], s[j]);
 				} else {
 					break;
 				}
-				
+
 				//重置主元
 				swap(s[i], s[right - 1]);
-				
+
 				if (k <= i) {
 					QuickSelect(s, k, left, i - 1);
 				} else if (k > i + 1) {
@@ -149,3 +149,33 @@ void search(int& N, int& M)
 	free(X);
 }
 
+// 最大连续子数组和
+// 解法1: 求一个数组的最大子数组和,最直观野蛮的方法就是,三个for循环三层遍历,求出数组中每一个子数组的和,复杂度为O(n ^ 3)
+int MaxSubArray(int *A, int n) {
+  int maxSum = a[0]; // 全负情况,返回最大负数
+  int curSum = 0;
+  for (int i = 0; i < n; i++) {
+    for (int j = i; j < n; j ++) {
+      for (int k = i;k <= j; k++) {
+        curSum += A[k];
+      }
+      if (curSum > maxSum) maxSum = curSum;
+
+      curSum = 0; //清零,否则sum最终存放的是所有子数组的和
+    }
+  }
+}
+
+// 解法2: 当我们令curSum为当前最大子数组的和,maxSum为最后要返回的最大子数组的和,当我们向后面扫描的时候:
+//        * 对j+1个元素有两种选择,要么放入前面找的的子数组中,要么作为新子数组的第一个元素
+//        * 同时,当curSum> maxSum,则更新maxSum = curSum,否则保持原值
+
+int MaxSubArray2(int *a,int n) {
+  int curSum= 0;
+  int maxSum = a[0];
+  for (int i = 0; i < n; i ++) {
+    curSum  = (a[i] > curSum + a[i] ? a[i] : curSum + a[i])
+      maxSum = (maxSum > curSum) ? maxSum :  curSum
+  }
+  return maxSum
+}
