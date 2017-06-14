@@ -179,3 +179,34 @@ int MaxSubArray2(int *a,int n) {
   }
   return maxSum
 }
+
+// 跳台阶问题
+// 1.考虑最简单的问题,如果只有一级台阶,只有一种跳法,两级台阶则有两种跳法
+// 讨论一般情况,把n极台阶看成是n的函数,记为f(n)
+// 当n>2时,第一次跳时,就有两种选择: 一次是第一次只跳一级后面的剩下的则是f(n-1),另外一种则是第一次跳两级,后面的就是f(n-2)
+long long Fibonacci(unsigned int n) {
+	int result[3] = {0, 1, 2};
+	if (n <= 2) {
+		return result[n];
+	}
+	return Fibonacci(n - 1) + Fibonacci(n - 2);
+}
+
+// 2.解法1用的递归方法又许多重复计算的工作,事实上我们可以从后往前推
+// 初始化时,db[0] = db[1] = 1,然后递推计算即可:db[n] = db[n -1] + db[n-2]
+//1, 1, 2, 3, 5, 8, 13, 21..
+int ClimbStairs(int n)
+{
+	int dp[3] = { 1, 1 };
+	if (n < 2)
+	{
+		return 1;
+	}
+	for (int i = 2; i <= n; i++)
+	{
+		dp[2] = dp[0] + dp[1];
+		dp[0] = dp[1];
+		dp[1] = dp[2];
+	}
+	return dp[2];
+}
