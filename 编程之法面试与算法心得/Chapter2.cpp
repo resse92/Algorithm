@@ -210,3 +210,54 @@ int ClimbStairs(int n)
 	}
 	return dp[2];
 }
+
+// 奇偶调序
+// 1.借鉴partition的实现1,维护两个指针,一个指针指向数组的第一个数字,为头指针,向右移动,一个指针指向最后一个数字,为尾指针
+// 两个指针分别向中间移动,如果第一个指向偶数,第二个指向奇数,则相互交换位置 ,时间负责度为O(n)
+// 判断是否是奇数
+bool isOddNubmer(int data) {
+	return data & 1 == 1;
+}
+
+//交换两个元素
+void swap(int *x, int * y) {
+	int tmp = *x;
+	*x = *y;
+	*y = tmp;
+}
+
+// 奇偶互换
+void OddEvenSort(int *pData, unsigned int length) {
+	if (pData == NULL || length == 0) {
+		return;
+	}
+	
+	int *pBegin = pData;
+	int *pEnd = pData + length - 1;
+	
+	while (pBegin < pEnd) {
+		// 如果pBegin 指向的是奇数,正常,向右移
+		if (isOddNumber(*pBegin)) {
+			pBegin ++;
+		}
+		else if (!*isOddNumber(*pEnd)) {
+			pEnd --;
+		} else {
+			swap(*pBegin, *pEnd);
+		}
+	}
+}
+
+// 2. 
+
+void OddEvenSort2(int data[], int lo, int hi) {
+	int i = lo - 1;
+	for (int j = lo; j < hi; j ++) {
+		// data[j]指向奇数,交换
+		if (isOddNumber(data[j])){
+			i = i + 1;
+			swap(&data[i], &data[j]);
+		}
+	}
+	swap(&data[i + 1], &data[hi]);
+}
