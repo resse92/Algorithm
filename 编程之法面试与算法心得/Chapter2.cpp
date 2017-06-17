@@ -248,7 +248,7 @@ void OddEvenSort(int *pData, unsigned int length) {
 	}
 }
 
-// 2. 
+// 2. 快排思想
 
 void OddEvenSort2(int data[], int lo, int hi) {
 	int i = lo - 1;
@@ -260,4 +260,32 @@ void OddEvenSort2(int data[], int lo, int hi) {
 		}
 	}
 	swap(&data[i + 1], &data[hi]);
+}
+
+// 荷兰国旗  现有n个红白蓝三种不同颜色的小球，乱序排列在一起，请通过两两交换任意两个球，使得从左至右，依次是一些红球、一些白球、一些蓝球。
+// 引用自gnuhpc
+//current指针所指元素为0时，与begin指针所指的元素交换，而后current++，begin++ ；
+//current指针所指元素为1时，不做任何交换（即球不动），而后current++ ；
+//current指针所指元素为2时，与end指针所指的元素交换，而后，current指针不动，end-- 。
+
+void helanguoqi(int *array, int *current, int *begin, int *end) {
+	while( current<=end )        
+	{             
+	  if( array[current] ==0 )             
+		{                 
+			swap(array[current],array[begin]);                  
+			current++;                  
+			begin++;            
+		}             
+		else if( array[current] == 1 )            
+		{                 
+			current++;            
+		}   
+
+		else //When array[current] =2   
+		{               
+			swap(array[current],array[end]);                
+			end--;            
+		}      
+	}  	
 }
