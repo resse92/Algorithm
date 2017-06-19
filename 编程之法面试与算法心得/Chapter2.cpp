@@ -289,3 +289,17 @@ void helanguoqi(int *array, int *current, int *begin, int *end) {
 		}      
 	}  	
 }
+
+// 矩阵相乘
+// 1.暴力解法
+void MulMatrix(int **matrixA, int **matrixB, int **matrixC) {
+	for (int i = 0; i < 2; ++i) {
+		for (int j = 0; j < 2; ++j) {
+			matrix[i][j] = 0;
+			for (int k = 0; k < 2; ++k) {
+				matrixC[i][j] += matrixA[i][k] * matrix[j][k];
+			}
+		}
+	}
+}
+
