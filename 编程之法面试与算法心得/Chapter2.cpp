@@ -303,3 +303,95 @@ void MulMatrix(int **matrixA, int **matrixB, int **matrixC) {
 	}
 }
 
+// 完美洗牌问题
+//1. 暴力算法
+void PerfectShuffle1(int *a, int n) {
+	int n2 = n * 2, i, b[N];
+	for (int i = 1; i <= n2; i++) {
+		b[(i * 2) % (n2 + 1)] = a[i];
+	}
+	for (int i = i; i <= n2; i++) {
+		a[i] = b[i];
+	}
+}
+
+// 2.完美洗牌算法
+//数组下标从1开始，from是圈的头部，mod是要取模的数 mod 应该为 2 * n + 1，时间复杂度O(圈长）
+void CycleLeader(int *a, int from, int mod)
+{
+	int t,i;
+
+	for (i = from * 2 % mod; i != from; i = i * 2 % mod)
+	{
+		t = a[i];
+		a[i] = a[from];
+		a[from] = t;
+	}
+}
+
+//翻转字符串时间复杂度O(to - from)
+void reverse(int *a, int from, int to)
+{
+	int t;
+	for (; from < to; ++from, --to)
+	{
+		t = a[from];
+		a[from] = a[to];
+		a[to] = t;
+	}
+}
+
+//循环右移num位 时间复杂度O(n)
+void RightRotate(int *a, int num, int n)
+{
+	reverse(a, 1, n - num);
+	reverse(a, n - num + 1, n);
+	reverse(a, 1, n);
+}
+
+//时间O(n)，空间O(1)
+void PerfectShuffle2(int *a, int n)
+{
+	int n2, m, i, k, t;
+	for (; n > 1;)
+	{
+			// step 1
+			n2 = n * 2;
+			for (k = 0, m = 1; n2 / m >= 3; ++k, m *= 3)
+				;
+			m /= 2;
+			// 2m = 3^k - 1 , 3^k <= 2n < 3^(k + 1)
+
+			// step 2
+			right_rotate(a + m, m, n);
+
+			// step 3
+			for (i = 0, t = 1; i < k; ++i, t *= 3)
+			{
+				cycle_leader(a , t, m * 2 + 1);
+			}
+
+			//step 4
+			a += m * 2;
+			n -= m;
+
+	}
+	// n = 1
+	t = a[1];
+	a[1] = a[2];
+	a[2] = t;
+}
+
+//copyright@caopengcs 8/24/2013
+//时间复杂度O(n)，空间复杂度O(1)，数组下标从1开始，调用perfect_shuffle3
+void shuffle(int *a, int n)
+{
+	int i, t, n2 = n * 2;
+	PerfectShuffle2(a, n);
+	for (i = 2; i <= n2; i += 2)
+	{
+		t = a[i - 1];
+		a[i - 1] = a[i];
+		a[i] = t;
+   }
+}
