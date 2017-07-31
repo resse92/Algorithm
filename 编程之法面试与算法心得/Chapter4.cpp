@@ -36,3 +36,48 @@ int main() {
 
   return 0;
 }
+
+// 4.2 行列递增矩阵的查找
+// 在一个m行n列的二维数组中,每一行每一列都按照从左到右递增的顺序排序,每一列从上到下的顺序排序.判断数组中是否含有某个整数
+#define ROW 4
+#define COL 4
+bool YoungMatrix(int array[][COL], int searchKey) {
+  int i = 0, j = COL - 1;
+  int var = array[i][j];
+  while (true) {
+    if (var == searchKey) {
+      return true;
+    } else if (var < searchKey && i < ROW - 1) {
+      var = array[++i][j];
+    } else if (var > searchKey && j > 0) {
+      var = array[i][--j];
+    } else {
+      return false;
+    }
+  }
+}
+
+// 4.3 出现次数超过一半的数字
+// 数组中有一个数字出现的次数超过了数组长度的一半,找出这个数字
+//a代表数组，length代表数组长度
+int FindOneNumber(int* a, int length)
+{
+    int candidate = a[0];
+    int nTimes = 1;
+    for (int i = 1; i < length; i++)
+    {
+        if (nTimes == 0)
+        {
+            candidate = a[i];
+            nTimes = 1;
+        }
+        else
+        {
+            if (candidate == a[i])
+                nTimes++;
+            else
+                nTimes--;
+        }
+    }
+    return candidate;
+}
