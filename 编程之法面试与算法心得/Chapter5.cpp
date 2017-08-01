@@ -33,5 +33,6 @@ double MaxProductSubstring(double *a, int length) {
     minEnd = min(min(end1, end2), a[i]);
     maxResult = max(maxResult, maxEnd);
   }
+
   return maxResult;
 }
