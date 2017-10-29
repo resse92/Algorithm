@@ -1,0 +1,119 @@
+* 最大子数组和
+** 一些小技巧
+   1. 求和变求差
+   2. 求积变求和
+   3. 求指数变求对数
+** 代码
+*** 暴力法
+直接三重循环计算最终结果。
+#+BEGIN_SRC C++
+  class Solution {
+  public:
+    int maxSubArray(vector<int>& nums) {
+      int n = nums.size();
+      int ans = 0;
+      for (int st = 0; st < n; ++ st) {
+        for (int ed = st + 1; ed < n; ++ed) {
+          int sum = 0;
+          for (int i = st; i < ed; ++i) {
+            sum += nums[i];
+            if (sum > ans) {
+              ans = sum;
+            }
+          }
+        }
+      }
+    }
+  }
+#+END_SRC
+*** 优化代码
+优化后，时间复杂度为O(n2)，上面重复计算的步骤太多了，可以进行适当的优化。
+#+BEGIN_SRC C++
+  class Solution {
+  public:
+    int maxSubArray(vector<int>& sums) {
+      int n = nums.size();
+      int ans = 0;
+      int totalI = 0;
+      int totalJ = 0;
+      int s[0] = new int[n + 1];
+
+      for (int i = 0; i < n; ++i) {
+        s[i + 1] += nums[i]
+      }
+      for (int i = 0; i < n; ++i) {
+        for (int j = i + 1; j < n; ++j) {
+          if(s[j + 1] - s[i] > ans)
+            ans = s[j + 1] - s[i]
+        }
+      }
+      return ans
+    }
+  }
+#+END_SRC
+*** 继续优化代码
+优化后代码的时间复杂度为O(n)
+#+BEGIN_SRC C++
+  class Solution {
+  public:
+    int maxSubArray(vector<int>& nums) {
+      int n = nums.size();
+      int ans = -2147483647;
+      int sj = 0;
+      int minSi = 0;
+      int si = 0;
+      for (int j = 0; j < n; ++j) {
+        sj += nums[j];
+        if (si < minSi)
+          minSi = si; // 代表minSi不可能大于0，最大就是0
+        if (sj - minSi > ans) {
+          ans = sj - minSi;
+        }
+        si += nums[j];
+      }
+    }
+  }
+#+END_SRC
+
+对上面的代码，我们还可以进行进一步的优化，比如sj，si其实是同一种东西，可是我们计算了两次，可以合并。
+#+BEGIN_SRC C++
+  // 贪心法
+  class Solution {
+  public:
+    int maxSubArray(vector<int>& nums) {
+      int n = nums.size();
+      int ans = 0;
+      int sum = 0;
+      for (int j = 0; j < n; ++j) {
+        sum += nums[j];
+        if (sum > ans) {
+          ans = sum
+        }
+        if (sum < 0) {
+          sum = 0;
+        }
+      }
+    }
+  }
+#+END_SRC
+
+这就变成了贪心法，空间复杂度O(1)，时间复杂度O(n).
+
+*** python写法
+#+BEGIN_SRC python
+  class Solution():
+      def maxSubArray(self, nums):
+          """
+          :type nums List[int]
+          :rtype: int
+          """
+          ans = -2147483647
+          sum = 0
+          for index in range(len(nums)):
+              sum = sum + nums[index]
+              if sum > ans:
+                  ans = sum
+              if sum < 0:
+                  sum = 0
+          return ans
+#+END_SRC
