@@ -118,3 +118,51 @@ k和m相同，是所有同一组Hash函数的两个布隆过滤器的交并差�
 用每一个集合来表示一棵树，每棵树的树根都是该集合的代表元。我们可以不相交的集合转化为一个森林，也叫不相交森林。
 
 * leetcode 155 Min statck
+没啥难点，leetcode上也标记的是easy，主要是最小值需要再创建一个栈来保存，用空间来换时间，每次来求最小值，leetcode测试超时。
+#+BEGIN_SRC python
+  class MinStack:
+
+      def __init__(self):
+          """
+          initialize your data structure here.
+          """
+          self.vals = []
+          self.min = []
+
+      def push(self, x):
+          """
+          :type x: int
+          :rtype: void
+          """
+          if (isinstance(x, int)):
+              if len(self.vals) == 0:
+                  self.min.insert(0, x)
+              else:
+                  if x <= self.min[0]:
+                      self.min.insert(0, x)
+              self.vals.insert(0, x)
+
+      def pop(self):
+          """
+          :rtype: void
+          """
+          delX = self.vals[0]
+          del self.vals[0]
+          if len(self.vals) > 0:
+              if delX <= self.min[0]:
+                  del self.min[0]
+
+      def top(self):
+          """
+          :rtype: int
+          """
+          return self.vals[0]
+
+      def getMin(self):
+          """
+          :rtype: int
+          """
+          if len(self.min) == 0:
+              return None
+          return self.min[0]
+#+END_SRC
