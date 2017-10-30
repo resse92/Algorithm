@@ -1,7 +1,7 @@
 * 设计一个动态平衡的hash表
 * leetcode 128: Longist Consecutive Sequence
 ** 思路
-初次拿到这个题目我想到的是先进行排序，然后再遍历取出连续的子数组。
+初次拿到这个题目我想到的是先进行排序，然后再遍历取出连续的子数组。但是这个方法leetcode测试不通过，会有超时问题。算法复杂度为O(nlog(n) + n)
 第二个方法就是用hash，一个集合set中存入所有数字，遍历数组中的每个数字，如果在集合中存在，则将其移除，然后分别取pre和next，如果依旧存在，依次下去，直到pre和next不存在为止。
 ** 方法1：排序法
 #+BEGIN_SRC python
@@ -25,7 +25,7 @@
                       print(length, ans)
                       ans = length
                   length = 1
-          return ans
+          return ans if ans > length else length
 
       def quickSort(self, liste1, left, right):
           if left >= right:
@@ -45,6 +45,76 @@
           self.quickSort(liste1, left + 1, high)
           return liste1
 #+END_SRC
-* 布隆过滤器
+** 方法2：用hash集合
+#+BEGIN_SRC python
+  class Solution:
+      def longestConsecutive(self, nums):
+          """
+          :type nums: List[int]
+          :rtype: int
+          """
+          hashMap = {}
+          length = 0
+          for i in nums:
+              hashMap[i] = True
+          for i in nums:
+              clength = 1
+              cIndex = i - 1
+              while True:
+                  if hashMap.__contains__(cIndex) and hashMap[cIndex]:
+                      hashMap[cIndex] = False
+                      clength += 1
+                      cIndex -= 1
+                  else:
+                      break
+              cIndex = i + 1
+              while True:
+                  if hashMap.__contains__(cIndex) and hashMap[cIndex]:
+                      hashMap[cIndex] = False
+                      clength += 1
+                      cIndex += 1
+                  else:
+                      break
+              if clength > length:
+                  length = clength
+          return length
+#+END_SRC
+
+* 布隆过滤器(bloom filter)
+** 介绍
+布隆过滤器就是使用多个Hash函数来达到空间有效，如果他们有一个说元素不在集合中，则肯定不在，如果他们都说在，虽然也有一定可能性他们在说谎，不过直觉判断这种事情的概率还是比较低的。
+** 优点
+相比于其他的数据结构，布隆过滤器有着空间和时间方面的巨大优势。布隆过滤器存储空间和插入/查询都是常数。布隆过滤器不需要存储元素本身，在某些对保密要求非常严格的场合有优势。
+布隆过滤器可以表示全局，其他任何数据结构都不能；
+k和m相同，是所有同一组Hash函数的两个布隆过滤器的交并差运算可以使用位操作进行。
+** 缺点
+随着存入的元素数量的增加，误算率也随之增加。如果元素数量太少，则使用散列表足以。
 * 实现一个并查集
-* leetcode 155
+** 介绍
+并查集是一种树形的数据结构，用于处理一些不相交的集合的合并及查询问题。
+集就是让每个元素构成一个单元素的集合，也就是按一定顺序将属于同一组的元素所在的集合合并。
+用集合中的某个元素来代表这个集合，该元素称为集合的 *代表元* 。
+一个集合内的所有元素组织成以代表元为根的树形结构。
+对于每一个元素parent[x]指向x在树形结构上的父亲节点。如果x是根节点，则令prent[x] = x。
+对于查找操作，假设需要确定x所在的集合，也就是确定集合的代表元。可以沿着parent[x]不断在树形结构中向上移动，知道parent[x]为根元素。
+/判断两个元素是否在同一集合，即判断根元素是否相同。/
+** 优化
+*** 路径压缩
+即在查询过程中，在查找x到根节点路径上的所有点的parent设为根节点。
+使用该优化后，平均复杂度可视为Ackerman函数的反函数，在实际应用中，可视为一个常数。
+*** rank合并
+就是在对两个不同子集连接时，按照rank来连，也就是rank低的连在rank高的下面。
+** 并查集操作
+*** 创建/初始化
+即建立一个只包含元素x的集合。通常并查集初始化操作是堆每个元素都简历一个只包含该元素的集合。每个成员都是自身所在集合的代表，所以我们只需要将所有成员的父节点设置为它就好了。
+*** 查找
+计算x所在的集合，指的是查找出指定元素的所在集合的代表元。
+在这个过程中可以使用路径压缩。
+最坏情况发生时，就是一个点连到底，这时时间复杂度就是O(n)了。
+为了改善时间效率，可以通过 /启发式合并方法，将包含较少节点的树连接到包含较多节点的树根上，可以防止树退化成一条链。另外，我们可以通过路径压缩来进一步减少均摊复杂度/ 同时使用者两种优化方法，可以将每次操作时间复杂度优化值常数级。
+*** 合并
+就是将结点所在的集合的代表元连接到另外一个代表元，这样两个集合就合并成一个了。
+** 并查集森林
+用每一个集合来表示一棵树，每棵树的树根都是该集合的代表元。我们可以不相交的集合转化为一个森林，也叫不相交森林。
+
+* leetcode 155 Min statck
