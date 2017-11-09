@@ -107,28 +107,21 @@
 	      :type q: TreeNode
 	      :rtype: TreeNode
 	      """
-	      if root is None:
-		  return None
-	      if root == p or root == q:
+	      if root in (None, p, q):
 		  return root
 	      left = self.lowestCommonAncestor(root.left, p, q)
 	      right = self.lowestCommonAncestor(root.right, p, q)
 
-	      if left is not None and right is None:
-		  return left
-	      elif right is not None and left is None:
-		  return right
-	      elif right is None and left is None:
-		  return None
-	      else:
+	      if left and right:
 		  return root
+	      return left or right
 
     #+END_SRC
 **** 思考
      这个题一开始我写的是 ~if root.val == p.val and root.val == q.val:~ ，这样就编译不通过，而我换成了 ~if root = p and root == q~ 时就通过了，为什么呢？
      答：想明白了，这样成功是因为他算了子节点是否相同，好蠢。
 **** 扩展
-     还有一种Tarjan算法，日后再研究吧。[[https://github.com/julycoding/The-Art-Of-Programming-By-July/blob/master/ebook/zh/03.03.md][算法艺术-七月]]
+     还有一种Tarjan算法。[[https://github.com/julycoding/The-Art-Of-Programming-By-July/blob/master/ebook/zh/03.03.md][算法艺术-七月]]
 *** lintcode 11. 二叉查找树搜索区间
     这题属于比较简单的，给定两个值k1和k2，找出二叉查找树中介于k1，k2之间的，即返回升序所有 ~k1<=key<=k2~ 的值。
     利用二叉树的特性，先遍历左节点，再遍历右节点，放入数组中，即可。
@@ -162,9 +155,191 @@
         
     #+END_SRC
 *** 94. Binary Tree Inorder Traversal（递归，非递归）
+    递归版
+    #+BEGIN_SRC python
+      # Definition for a binary tree node.
+      class TreeNode(object):
+	  def __init__(self, x):
+	      self.val = x
+	      self.left = None
+	      self.right = None
+
+      class Solution(object):
+	  def inorderTraversal(self, root):
+	      """
+	      :type root: TreeNode
+	      :rtype: List[int]
+	      """
+	      ans = []
+	      if root is None:
+		  return ans
+	      ans.extend(self.inorderTraversal(root.left))
+	      ans.append(root)
+	      ans.extend(self.inorderTraversal(root.right))
+	      return ans
+    #+END_SRC
+    非递归班
+    #+BEGIN_SRC python
+      # Definition for a binary tree node.
+      class TreeNode(object):
+	  def __init__(self, x):
+	      self.val = x
+	      self.left = None
+	      self.right = None
+
+      class Solution(object):
+	  def inorderTraversal(self, root):
+	      """
+	      :type root: TreeNode
+	      :rtype: List[int]
+	      """
+	      res, stack = [], []
+	      while True:
+		  while root:
+		      stack.append(root)
+		      root = root.left
+		  if not stack:
+		      return res
+		  node = stack.pop()
+		  res.append(node.val)
+		  root = node.right
+    #+END_SRC
 *** 98. Validate Binary Search Tree
+    这题我一开始想用比较树左右根节点的大小关系的，可是没写出来，只能用中序遍历来写了。
+    #+BEGIN_SRC python
+      # Definition for a binary tree node.
+      class TreeNode(object):
+	  def __init__(self, x):
+	      self.val = x
+	      self.left = None
+	      self.right = None
+
+      class Solution(object):
+	  def isValidBST(self, root):
+	      """
+	      :type root: TreeNode
+	      :rtype: bool
+	      """
+	      inorder = self.inorderTraversal(root)
+	      for i in range(1, len(inorder)):
+		  if inorder(i-1) >= inorder(i):
+		      return False
+	      return True
+
+	  def inorderTraversal(self, root):
+	      """
+	      :type root: TreeNode
+	      :rtype: List[int]
+	      """
+	      ans = []
+	      if root is None:
+		  return ans
+	      ans.extend(self.inorderTraversal(root.left))
+	      ans.append(root.val)
+	      ans.extend(self.inorderTraversal(root.right))
+	      return ans
+    #+END_SRC
 *** 144. Binary Tree Preorder Traversal
+    #+BEGIN_SRC python
+      # Definition for a binary tree node.
+      class TreeNode(object):
+	  def __init__(self, x):
+	      self.val = x
+	      self.left = None
+	      self.right = None
+
+      class Solution(object):
+	  def preorderTraversal(self, root):
+	      """
+	      递归版本
+	      :type root: TreeNode
+	      :rtype: List[int]
+	      """
+	      ans = []
+	      if root is None:
+		  return ans
+	      ans.append(root.val)
+	      ans.extend(self.preorderTraversal(root.left))
+	      ans.extend(self.preorderTraversal(root.right))
+	      return ans
+
+	  def preorderTraversalWithIterate(self, root):
+	      """
+	      遍历版本
+	      :type root: TreeNode
+	      :rtype: List[int]
+	      """
+	      ans, statck = [], []
+	      while True:
+		  while root:
+		      ans.append(root)
+		      statck.append(root)
+		      root = root.left
+		  if not statck:
+		      return ans
+		  node = statck.pop()
+		  root = node.right
+    #+END_SRC
 *** 145. Binary Tree Postorder Traversal
+    #+BEGIN_SRC python
+      # Definition for a binary tree node.
+      class TreeNode(object):
+	  def __init__(self, x):
+	      self.val = x
+	      self.left = None
+	      self.right = None
+
+      class Solution(object):
+	  def postorderTraversal(self, root):
+	      """
+	      :type root: TreeNode
+	      :rtype: List[int]
+	      """
+	      ans = []
+	      if root is None:
+		  return ans
+	      ans.extend(self.postorderTraversal(root.left))
+	      ans.extend(self.postorderTraversal(root.right))
+	      ans.append(root.val)
+	      return ans
+
+	  def postorderTraversalWithIterate(self, root):
+	      """
+	      :type root: TreeNode
+	      :rtype: List[int]
+	      """
+	      traversal, stack = [], [(root, False)]
+	      while stack:
+		  node, visited = stack.pop()
+		  if node:
+		      if visited:
+			  # add to result if visited
+			  traversal.append(node.val)
+		      else:
+			  # post-order
+			  stack.append((node, True))
+			  stack.append((node.right, False))
+			  stack.append((node.left, False))
+
+	      return traversal
+
+	  def postorderTraversalWithIterate2(self, root):
+	      """
+	      :type root: TreeNode
+	      :rtype: List[int]
+	      """
+	      traversal, stack = [], [root]
+	      while stack:
+		  node = stack.pop()
+		  if node:
+		      # pre-order, right first
+		      traversal.append(node.val)
+		      stack.append(node.left)
+		      stack.append(node.right)
+
+	      # reverse result
+	      return traversal[::-1]
+    #+END_SRC
 *** 103. Binary Tree Zigzag Level Order Traversal
 * 堆
 ** leetcode 相关题解
