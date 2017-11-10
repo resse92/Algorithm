@@ -341,6 +341,101 @@
 	      return traversal[::-1]
     #+END_SRC
 *** 103. Binary Tree Zigzag Level Order Traversal
+    这题和层级排序差不多，只不过奇数层反转就好了。[[https://github.com/zhuruliang/Algorithm/tree/master/LeetCode_swift.playground][我的层级排序swift写法]]
+    #+BEGIN_SRC python
+      # Definition for a binary tree node.
+      class TreeNode(object):
+	  def __init__(self, x):
+	      self.val = x
+	      self.left = None
+	      self.right = None
+
+      class Solution(object):
+	  def zigzagLevelOrder(self, root):
+	      """
+	      :type root: TreeNode
+	      :rtype: List[List[int]]
+	      """
+	      if root is None:
+		  return []
+	      ans = []
+	      currentLevel = [root]
+	      i = 0
+	      while currentLevel:
+		  i += 1
+		  currentLevelAns = []
+		  nextLevel = []
+		  for item in currentLevel:
+		      currentLevelAns.append(item.val)
+		      if item.left:
+			  nextLevel.append(item.left)
+		      if item.right:
+			  nextLevel.append(item.right)
+		  if i % 2 == 1:
+		      currentLevelAns = currentLevelAns[::-1]
+		  ans.append(currentLevelAns)
+		  currentLevel = nextLevel
+	      return ans
+        
+        
+            
+    #+END_SRC
 * 堆
+** 介绍
+   先上一张别人的图：
+   [[https://pic1.zhimg.com/50/v2-e7a99fda571a4294e9b2196d58f8e65c_hd.jpg]]
+   再之是[[https://zh.wikipedia.org/wiki/%25E5%25A0%2586_(%25E6%2595%25B0%25E6%258D%25AE%25E7%25BB%2593%25E6%259E%2584)][wiki]]
+   堆一般指二叉堆，满足以下特性：
+   - 任意节点小于（或者大于）它的所有后裔，最小元或者最大元在堆的根上；
+   - 堆总是一颗完全树，即除了最底层，其他层次都被元素堆满，且最底层尽可能从左到右填入。
 ** leetcode 相关题解
 *** 23. Merge k Sorted Lists
+    首先暴力法[[https://leetcode.com/problems/merge-k-sorted-lists/solution/][leetcode上的解法]]，具体看leetcode链接就行了，上面第三个方法是用PriorityQueue来解决的，在python2运行是没有问题的，在python3上运行有问题，不知道为什么。
+    下面这种是自己实现一个最小堆来实现的， ~adjustDown~ 函数从数组的 *最后* 一个调整，使之变成一个最小堆。首先将所有数组第一个元素放入最小堆，然后再把各个链表的next放入，直到取完。算法复杂度为O(nlgn)。
+    #+BEGIN_SRC python
+      class Solution(object):
+	  def mergeKLists(self, lists):
+	      if len(lists) == 0:
+		  return []
+	      heap = []
+	      for list in lists:
+		  if list:
+		      heap.append(list)
+	      for i in range(len(heap), 0, -1):
+		  self.adjustDown(heap, i-1)
+	      # for i, item in enumerate(heap)[::-1]:
+	      #     self.adjustDown(heap, i)
+
+	      head, tail = None, None
+	      while heap:
+		  node = ListNode(heap[0].val)
+		  if head is None:
+		      head = node
+		  else:
+		      tail.next = node
+		  tail = node
+		  heap[0] = heap[0].next
+		  if heap[0] is None:
+		      heap[0], heap[len(heap) - 1] = heap[len(heap) - 1], heap[0]
+		      heap.pop()
+		  if heap is not None:
+		      self.adjustDown(heap, 0)
+	      return head
+        
+	  def adjustDown(self, heap, i):
+	      length = len(heap)
+	      while i < length:
+		  left = i * 2 + 1
+		  right = i * 2 + 2
+		  min_pos = i
+		  if left < length and (heap[left].val < heap[min_pos].val):
+		      min_pos = left
+		  if right < length and (heap[right].val < heap[min_pos].val):
+		      min_pos = right
+		  if min_pos != i:
+		      heap[i], heap[min_pos] = heap[min_pos], heap[i]
+		      i = min_pos
+		  else:
+		      break
+        
+    #+END_SRC
