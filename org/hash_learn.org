@@ -117,6 +117,98 @@ k和m相同，是所有同一组Hash函数的两个布隆过滤器的交并差�
 ** 并查集森林
 用每一个集合来表示一棵树，每棵树的树根都是该集合的代表元。我们可以不相交的集合转化为一个森林，也叫不相交森林。
 
+** 代码
+   #+BEGIN_SRC python
+     class UF:
+	 def __init__(self, n):
+	     """
+	     初始化一个并查集
+	     """
+	     self.count = n
+	     self.id = []
+	     i = 0
+	     while i < n:
+		 self.id.append(i)
+		 i += 1
+	 def connected(self, p, q):
+	     """
+	     判断是否在一个集合里面
+	     """
+	     return self.find(p) == self.find(q)
+
+	 def find(self, q):
+	     """
+	     寻找节点的根节点
+	     """
+	     while (q != self.id[q]):
+		 q = self.id[q]
+        
+	     return q
+
+	 def union(self, p, q):
+	     """
+	     结合两个集合
+	     """
+	     idq = self.find(p)
+	     idp = self.find(q)
+	     if not self.connected(p, q):
+		 self.id[idp] = idq
+		 self.count -= 1
+   #+END_SRC
+   带权重的并查集，即在union之前，先判断两个树的大小（节点数量），将小的树附加到大点的树上，这样，合并后的深度变化不大
+   #+BEGIN_SRC python
+     class WeightedQuickUnion(object):
+	 id=[]
+	 count=0
+	 sz=[]
+
+	 def __init__(self,n):
+	     self.count = n
+	     i=0
+	     while i<n:
+		 self.id.append(i)
+		 self.sz.append(1) # inital size of each tree is 1
+		 i+=1
+
+	 def connected(self,p,q):
+	     if self.find(p) == self.find(q):
+		 return True
+	     else:            
+		 return False
+
+	 def find(self,p):   
+	     while (p != self.id[p]):
+		 p = self.id[p]
+	     return p
+
+	 def union(self,p,q):
+	     idp = self.find(p)
+	     print("id of %d is: %d" % (p,idp))
+	     idq = self.find(q)
+	     print("id of %d is: %d" % (q,idq))
+	     if not self.connected(p,q):            
+		 print("Before Connected: tree size of %d's id is: %d" % (p,self.sz[idp]))
+		 print("Before Connected: tree size of %d's id is: %d" % (q,self.sz[idq]))
+		 if (self.sz[idp] < self.sz[idq]):
+		     print("tree size of %d's id is smaller than %d's id" %(p,q))
+		     print("id of %d's id (%d) is set to %d" % (p,idp,idq))
+		     self.id[idp] = idq
+
+		     print("tree size of %d's id is incremented by tree size of %d's id" %(q,p))
+		     self.sz[idq] += self.sz[idp]    
+		     print("After Connected: tree size of %d's id is: %d" % (p,self.sz[idp]))
+		     print("After Connected: tree size of %d's id is: %d" % (q,self.sz[idq]))        
+		 else:                  
+		     print("tree size of %d's id is larger than or equal with %d's id" %(p,q))
+		     print("id of %d's id (%d) is set to %d" % (q,idq,idp))
+		     self.id[idq] = idp
+		     print("tree size of %d's id is incremented by tree size of %d's id" %(p,q))
+		     self.sz[idp] += self.sz[idq]   
+		     print("After Connected: tree size of %d's id is: %d" % (p,self.sz[idp]))
+		     print("After Connected: tree size of %d's id is: %d" % (q,self.sz[idq]))
+
+		 self.count -=1
+   #+END_SRC
 * leetcode 155 Min statck
 没啥难点，leetcode上也标记的是easy，主要是最小值需要再创建一个栈来保存，用空间来换时间，每次来求最小值，leetcode测试超时。
 #+BEGIN_SRC python
