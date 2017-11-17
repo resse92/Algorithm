@@ -1,0 +1,44 @@
+* 207. Course Schedule
+** 解法
+   本题采用图论的方法解决，根据要求一步步走，判断无环即可。分别用数组保存课程，和课程的依赖，再用一个字典保存所有课程的入度，key为课程，value为入度数，遍历这个字典，判断是否有课程入度为0，如果没有则表示，课程的依赖存在循环，返回False,如果有，依次取出来，并将所有依赖它的课程的入度数依次减1，如此循环，直到所有字典没有key了，说明可以一次学完所有课程。
+** 代码
+   #+BEGIN_SRC python
+     class Solution:
+	 def canFinish(self, numCourses, prerequisites):
+	     """
+	     :type numCourses: int
+	     :type prerequisites: List[List[int]]
+	     :rtype: bool
+	     """
+	     if len(prerequisites) == 0 or numCourses == 0:
+		 return True
+        
+	     courses = []
+	     last_courses = []
+	     pre_nums = {k: v for k, v in enumerate([0] * numCourses)}
+	     for li in prerequisites:
+		 courses.append(li[0])
+		 last_courses.append(li[1])
+		 pre_nums[li[0]] += 1
+	     return self.dfs(courses, last_courses, pre_nums)
+
+	 def dfs(self, courses, last_courses, pre_nums):
+	     if not pre_nums:
+		 return True
+	     flag = False # 是否有不依赖于其他课程的课程
+	     current_course = None
+	     for index, i in pre_nums.items():
+		 if i == 0:
+		     flag = True
+		     current_course = index
+		     del pre_nums[index]
+		     # pre_nums.remove(i)
+		     break
+	     if not flag:
+		 return False
+	     for index, last_course in enumerate(last_courses):
+		 if current_course == last_course:
+		     course = courses[index]
+		     pre_nums[course] -= 1
+	     return self.dfs(courses, last_courses, pre_nums)
+   #+END_SRC
