@@ -42,3 +42,55 @@
 		     pre_nums[course] -= 1
 	     return self.dfs(courses, last_courses, pre_nums)
    #+END_SRC
+* 210. Course Schedule II
+** 解法  
+   和上题差不多，不过就是记录一下寻找路径。
+** 代码
+   #+BEGIN_SRC python
+  class Solution:
+      def findOrder(self, numCourses, prerequisites):
+	  """
+	  :type numCourses: int
+	  :type prerequisites: List[List[int]]
+	  :rtype: List[int]
+	  """
+	  if len(prerequisites) == 0 and numCourses != 0:
+	      x = [k for k in range(numCourses)]
+	      x.reverse()
+	      return x 
+        
+	  courses = []
+	  last_courses = []
+	  pre_nums = {k: v for k, v in enumerate([0] * numCourses)}
+	  for li in prerequisites:
+	      courses.append(li[0])
+	      last_courses.append(li[1])
+	      pre_nums[li[0]] += 1
+	  ans = []
+        
+	  def dfs(courses, last_courses, pre_nums):
+	      if not pre_nums:
+		  return True
+	      flag = False # 是否有不依赖于其他课程的课程
+	      current_course = None
+	      for index, i in pre_nums.items():
+		  if i == 0:
+		      flag = True
+		      current_course = index
+		      ans.append(current_course)
+		      del pre_nums[index]
+		      # pre_nums.remove(i)
+		      break
+	      if not flag:
+		  return False
+	      for index, last_course in enumerate(last_courses):
+		  if current_course == last_course:
+		      course = courses[index]
+		      pre_nums[course] -= 1
+	      return dfs(courses, last_courses, pre_nums)
+	  print(ans)
+	  if dfs(courses, last_courses, pre_nums):
+	      return ans
+	  else:
+	      return []
+#+END_SRC
