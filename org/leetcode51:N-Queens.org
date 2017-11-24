@@ -1,0 +1,34 @@
+* N-Queens
+#+BEGIN_SRC python
+class Solution:
+    def solveNQueens(self, n):
+        """
+        :type n: int
+        :rtype: List[List[str]]
+        """
+        ans = []
+        i = j = 0
+        while i < n:
+            temp = []
+            while j < n:
+                temp.append('.')
+                j += 1
+            ans.append(temp)
+            i += 1
+            j = 0
+        return self.dfs(0, 0, ans)
+    
+    def dfs(self, x, y, ans):
+        if y >= len(ans):
+            return ans
+        if self.isValid(x, y, ans):
+            ans[x][y] = 'Q'
+            return self.dfs(x, y+1, ans)
+    
+    def isValid(self, x, y, ans):
+        if x >= len(ans):
+            return True
+        if ans[x][y] == 'Q':
+            return False
+        return self.isValid(x+1, y, ans)
+#+END_SRC
