@@ -1,34 +1,25 @@
 * N-Queens
+** 思路
+   解决这类问题,通常都用回溯法,也可以叫对决策树的深度优先搜索,n皇后问题可以用一个数组来表示皇后的位置,比如[1,3,0,2],在0行为第一列,以此类推.每进行一步check一下当前位置是否可以放置,如此递归即可.
+** 代码
 #+BEGIN_SRC python
 class Solution:
+    # @return a list of lists of string
     def solveNQueens(self, n):
-        """
-        :type n: int
-        :rtype: List[List[str]]
-        """
-        ans = []
-        i = j = 0
-        while i < n:
-            temp = []
-            while j < n:
-                temp.append('.')
-                j += 1
-            ans.append(temp)
-            i += 1
-            j = 0
-        return self.dfs(0, 0, ans)
-    
-    def dfs(self, x, y, ans):
-        if y >= len(ans):
-            return ans
-        if self.isValid(x, y, ans):
-            ans[x][y] = 'Q'
-            return self.dfs(x, y+1, ans)
-    
-    def isValid(self, x, y, ans):
-        if x >= len(ans):
+        def check(k, j):  # check if the kth queen can be put in column j!
+            for i in range(k):
+                if board[i] == j or abs(k-i) == abs(board[i] - j):
+                    return False
             return True
-        if ans[x][y] == 'Q':
-            return False
-        return self.isValid(x+1, y, ans)
+        def dfs(depth, valuelist):
+            if depth == n: res.append(valuelist); return
+            for i in range(n):
+                if check(depth,i): 
+                    board[depth] = i
+                    s='.' * n
+                    dfs(depth + 1, valuelist + [s[:i] + 'Q' + s[i+1:]])
+        board = [-1 for i in range(n)] # 保存所有皇后的位置
+        res = []
+        dfs(0, [])
+        return res
 #+END_SRC
