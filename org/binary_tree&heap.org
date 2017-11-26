@@ -1,0 +1,441 @@
+* 二叉树
+** 类型
+*** 满二叉树
+    除了最后一层子节点没有子节点外，所有节点都有左右两个节点。
+*** 完全二叉树
+    叶子节点只能出现在最下层或者倒数第二层，并且最下层的节点集中在该层的最左边若干节点。
+    若设二叉树的深度为h，除第 h 层外，其它各层 (1～h-1) 的结点数都达到最大个数，第 h 层所有的结点都连续集中在最左边，这就是完全二叉树。
+*** 平衡二叉树
+    又称AVL树，可以是一颗空树，或者满足以下条件：
+    它的左右字数的高度差不超过1，并且左右子树都是一颗平衡二叉树。
+*** 二叉搜索树
+    BST，二叉排序树，可以是一颗空树，或者具有以下条件：
+    所有非空左子树上的值都小于根节点，所有非空右节点上的值均大于根节点，且它的左右子树也分别是二叉排序树
+*** 红黑树
+    红黑树是一颗自平衡二叉树，典型用途是实现关联数组。
+*** 哈夫曼树
+    给定n个权值作为n个叶子结点，构造一棵二叉树，若带权路径长度达到最小，称这样的二叉树为最优二叉树，也称为哈夫曼树(Huffman Tree)。哈夫曼树是带权路径长度最短的树，权值较大的结点离根较近。
+** leetcode 相关题解
+*** 105. Construct Binary Tree from Preorder and Inorder Traversal
+    先序遍历第一个元素就是根节点，首先遍历得到中序遍历的根节点，那么中序遍历根节点左边肯定是左子树，中序遍历根节点右边就是右子树，然后递归就可以了。
+    #+BEGIN_SRC python
+      # Definition for a binary tree node.
+      class TreeNode(object):
+	  def __init__(self, x):
+	      self.val = x
+	      self.left = None
+	      self.right = None
+
+      class Solution(object):
+	  def buildTree(self, preorder, inorder):
+	      """
+	      :type preorder: List[int]
+	      :type inorder: List[int]
+	      :rtype: TreeNode
+	      """
+	      return self._buildTree(preorder, 0, len(preorder), inorder, 0, len(inorder))
+
+	  def _buildTree(self, preorder, pre_start, pre_end, inorder, in_start, in_end):
+	      """
+	      :type preorder: List[int]
+	      :type pre_start: int
+	      :type pre_end: int
+	      :type inorder: List[int]
+	      :type in_start: int
+	      :type in_end: int
+	      """
+	      if (in_start == in_end):
+		  return None
+	      # 创建根节点
+	      _root_node = TreeNode(preorder[pre_start])
+	      # 循环找出中序遍历的节点，先序遍历第一个元素就是根节点
+	      i = in_start
+	      while i < in_end:
+		  if (preorder[pre_start] == inorder[i]):
+		      break
+		  i += 1
+	      left_len = i - in_start
+	      _root_node.left = self._buildTree(preorder, pre_start + 1, pre_start + left_len, inorder, in_start, i)
+	      _root_node.right = self._buildTree(preorder, pre_start+left_len+1, pre_end, inorder, i+1, in_end)
+	      return _root_node
+    #+END_SRC
+*** 235. Lowest Common Ancestor of a Binary Search Tree
+    二叉搜索树的特点就是，左子树的值比根节点小，右子树的值比根节点大，所以我们利用这个特性，如果p，q都大于root，那么肯定在右节点上，反之如果都小于root，那么肯定在左节点上，如果root介于p，q之间，那么LCA肯定就是根节点。依次递归就可。
+    这个题有个点就是p不一定小于q的，我想当然的以为p<q，浪费了十分钟。
+    #+BEGIN_SRC python
+      # Definition for a binary tree node.
+      class TreeNode(object):
+	  def __init__(self, x):
+	      self.val = x
+	      self.left = None
+	      self.right = None
+
+      class Solution(object):
+	  def lowestCommonAncestor(self, root, p, q):
+	      """
+	      :type root: TreeNode
+	      :type p: TreeNode
+	      :type q: TreeNode
+	      :rtype: TreeNode
+	      """
+	      if root is None:
+		  return None
+	      if root.val == q.val or root.val == p.val:
+		  return root
+	      if root.val > q.val and root.val > p.val:
+		  return self.lowestCommonAncestor(root.left, p, q)
+	      elif root.val < p.val and root.val < q.val:
+		  return self.lowestCommonAncestor(root.right, p, q)
+	      else:
+		  return root
+    #+END_SRC
+*** 236. Lowest Common Ancestor of a Binary Tree
+    这个问题初看和上个问题差不多，只不过不是一个二叉搜索树了，但是同样转为一个递归问题，很容易就解决了。
+    #+BEGIN_SRC python
+      # Definition for a binary tree node.
+      class TreeNode(object):
+	  def __init__(self, x):
+	      self.val = x
+	      self.left = None
+	      self.right = None
+
+      class Solution(object):
+	  def lowestCommonAncestor(self, root, p, q):
+	      """
+	      :type root: TreeNode
+	      :type p: TreeNode
+	      :type q: TreeNode
+	      :rtype: TreeNode
+	      """
+	      if root in (None, p, q):
+		  return root
+	      left = self.lowestCommonAncestor(root.left, p, q)
+	      right = self.lowestCommonAncestor(root.right, p, q)
+
+	      if left and right:
+		  return root
+	      return left or right
+
+    #+END_SRC
+**** 思考
+     这个题一开始我写的是 ~if root.val == p.val and root.val == q.val:~ ，这样就编译不通过，而我换成了 ~if root = p and root == q~ 时就通过了，为什么呢？
+     答：想明白了，这样成功是因为他算了子节点是否相同，好蠢。
+**** 扩展
+     还有一种Tarjan算法。[[https://github.com/julycoding/The-Art-Of-Programming-By-July/blob/master/ebook/zh/03.03.md][算法艺术-七月]]
+*** lintcode 11. 二叉查找树搜索区间
+    这题属于比较简单的，给定两个值k1和k2，找出二叉查找树中介于k1，k2之间的，即返回升序所有 ~k1<=key<=k2~ 的值。
+    利用二叉树的特性，先遍历左节点，再遍历右节点，放入数组中，即可。
+    #+BEGIN_SRC python
+      # Definition of TreeNode:
+      class TreeNode:
+	  def __init__(self, val):
+	      self.val = val
+	      self.left, self.right = None, None
+
+      class Solution:
+	  """
+	  @param: root: param root: The root of the binary search tree
+	  @param: k1: An integer
+	  @param: k2: An integer
+	  @return: return: Return all keys that k1<=key<=k2 in ascending order
+	  """
+	  def searchRange(self, root, k1, k2):
+	      ans = []
+	      if root is None:
+		  return ans
+	      if root.val < k1:
+		  ans.extend(self.searchRange(root.right, k1, k2))
+	      if root.val >= k1 and root.val <= k2:
+		  ans.extend(self.searchRange(root.left, k1, k2))
+		  ans.append(root.val)
+		  ans.extend(self.searchRange(root.right, k1, k2))
+	      if root.val > k2:
+		  ans.extend(self.searchRange(root.left, k1, k2))
+	      return ans
+        
+    #+END_SRC
+*** 94. Binary Tree Inorder Traversal（递归，非递归）
+    递归版
+    #+BEGIN_SRC python
+      # Definition for a binary tree node.
+      class TreeNode(object):
+	  def __init__(self, x):
+	      self.val = x
+	      self.left = None
+	      self.right = None
+
+      class Solution(object):
+	  def inorderTraversal(self, root):
+	      """
+	      :type root: TreeNode
+	      :rtype: List[int]
+	      """
+	      ans = []
+	      if root is None:
+		  return ans
+	      ans.extend(self.inorderTraversal(root.left))
+	      ans.append(root)
+	      ans.extend(self.inorderTraversal(root.right))
+	      return ans
+    #+END_SRC
+    非递归班
+    #+BEGIN_SRC python
+      # Definition for a binary tree node.
+      class TreeNode(object):
+	  def __init__(self, x):
+	      self.val = x
+	      self.left = None
+	      self.right = None
+
+      class Solution(object):
+	  def inorderTraversal(self, root):
+	      """
+	      :type root: TreeNode
+	      :rtype: List[int]
+	      """
+	      res, stack = [], []
+	      while True:
+		  while root:
+		      stack.append(root)
+		      root = root.left
+		  if not stack:
+		      return res
+		  node = stack.pop()
+		  res.append(node.val)
+		  root = node.right
+    #+END_SRC
+*** 98. Validate Binary Search Tree
+    这题我一开始想用比较树左右根节点的大小关系的，可是没写出来，只能用中序遍历来写了。
+    #+BEGIN_SRC python
+      # Definition for a binary tree node.
+      class TreeNode(object):
+	  def __init__(self, x):
+	      self.val = x
+	      self.left = None
+	      self.right = None
+
+      class Solution(object):
+	  def isValidBST(self, root):
+	      """
+	      :type root: TreeNode
+	      :rtype: bool
+	      """
+	      inorder = self.inorderTraversal(root)
+	      for i in range(1, len(inorder)):
+		  if inorder(i-1) >= inorder(i):
+		      return False
+	      return True
+
+	  def inorderTraversal(self, root):
+	      """
+	      :type root: TreeNode
+	      :rtype: List[int]
+	      """
+	      ans = []
+	      if root is None:
+		  return ans
+	      ans.extend(self.inorderTraversal(root.left))
+	      ans.append(root.val)
+	      ans.extend(self.inorderTraversal(root.right))
+	      return ans
+    #+END_SRC
+*** 144. Binary Tree Preorder Traversal
+    #+BEGIN_SRC python
+      # Definition for a binary tree node.
+      class TreeNode(object):
+	  def __init__(self, x):
+	      self.val = x
+	      self.left = None
+	      self.right = None
+
+      class Solution(object):
+	  def preorderTraversal(self, root):
+	      """
+	      递归版本
+	      :type root: TreeNode
+	      :rtype: List[int]
+	      """
+	      ans = []
+	      if root is None:
+		  return ans
+	      ans.append(root.val)
+	      ans.extend(self.preorderTraversal(root.left))
+	      ans.extend(self.preorderTraversal(root.right))
+	      return ans
+
+	  def preorderTraversalWithIterate(self, root):
+	      """
+	      遍历版本
+	      :type root: TreeNode
+	      :rtype: List[int]
+	      """
+	      ans, statck = [], []
+	      while True:
+		  while root:
+		      ans.append(root)
+		      statck.append(root)
+		      root = root.left
+		  if not statck:
+		      return ans
+		  node = statck.pop()
+		  root = node.right
+    #+END_SRC
+*** 145. Binary Tree Postorder Traversal
+    #+BEGIN_SRC python
+      # Definition for a binary tree node.
+      class TreeNode(object):
+	  def __init__(self, x):
+	      self.val = x
+	      self.left = None
+	      self.right = None
+
+      class Solution(object):
+	  def postorderTraversal(self, root):
+	      """
+	      :type root: TreeNode
+	      :rtype: List[int]
+	      """
+	      ans = []
+	      if root is None:
+		  return ans
+	      ans.extend(self.postorderTraversal(root.left))
+	      ans.extend(self.postorderTraversal(root.right))
+	      ans.append(root.val)
+	      return ans
+
+	  def postorderTraversalWithIterate(self, root):
+	      """
+	      :type root: TreeNode
+	      :rtype: List[int]
+	      """
+	      traversal, stack = [], [(root, False)]
+	      while stack:
+		  node, visited = stack.pop()
+		  if node:
+		      if visited:
+			  # add to result if visited
+			  traversal.append(node.val)
+		      else:
+			  # post-order
+			  stack.append((node, True))
+			  stack.append((node.right, False))
+			  stack.append((node.left, False))
+
+	      return traversal
+
+	  def postorderTraversalWithIterate2(self, root):
+	      """
+	      :type root: TreeNode
+	      :rtype: List[int]
+	      """
+	      traversal, stack = [], [root]
+	      while stack:
+		  node = stack.pop()
+		  if node:
+		      # pre-order, right first
+		      traversal.append(node.val)
+		      stack.append(node.left)
+		      stack.append(node.right)
+
+	      # reverse result
+	      return traversal[::-1]
+    #+END_SRC
+*** 103. Binary Tree Zigzag Level Order Traversal
+    这题和层级排序差不多，只不过奇数层反转就好了。[[https://github.com/zhuruliang/Algorithm/tree/master/LeetCode_swift.playground][我的层级排序swift写法]]
+    #+BEGIN_SRC python
+      # Definition for a binary tree node.
+      class TreeNode(object):
+	  def __init__(self, x):
+	      self.val = x
+	      self.left = None
+	      self.right = None
+
+      class Solution(object):
+	  def zigzagLevelOrder(self, root):
+	      """
+	      :type root: TreeNode
+	      :rtype: List[List[int]]
+	      """
+	      if root is None:
+		  return []
+	      ans = []
+	      currentLevel = [root]
+	      i = 0
+	      while currentLevel:
+		  i += 1
+		  currentLevelAns = []
+		  nextLevel = []
+		  for item in currentLevel:
+		      currentLevelAns.append(item.val)
+		      if item.left:
+			  nextLevel.append(item.left)
+		      if item.right:
+			  nextLevel.append(item.right)
+		  if i % 2 == 1:
+		      currentLevelAns = currentLevelAns[::-1]
+		  ans.append(currentLevelAns)
+		  currentLevel = nextLevel
+	      return ans
+        
+        
+            
+    #+END_SRC
+* 堆
+** 介绍
+   先上一张别人的图：
+   [[https://pic1.zhimg.com/50/v2-e7a99fda571a4294e9b2196d58f8e65c_hd.jpg]]
+   再之是[[https://zh.wikipedia.org/wiki/%25E5%25A0%2586_(%25E6%2595%25B0%25E6%258D%25AE%25E7%25BB%2593%25E6%259E%2584)][wiki]]
+   堆一般指二叉堆，满足以下特性：
+   - 任意节点小于（或者大于）它的所有后裔，最小元或者最大元在堆的根上；
+   - 堆总是一颗完全树，即除了最底层，其他层次都被元素堆满，且最底层尽可能从左到右填入。
+** leetcode 相关题解
+*** 23. Merge k Sorted Lists
+    首先暴力法[[https://leetcode.com/problems/merge-k-sorted-lists/solution/][leetcode上的解法]]，具体看leetcode链接就行了，上面第三个方法是用PriorityQueue来解决的，在python2运行是没有问题的，在python3上运行有问题，不知道为什么。
+    下面这种是自己实现一个最小堆来实现的， ~adjustDown~ 函数从数组的 *最后* 一个调整，使之变成一个最小堆。首先将所有数组第一个元素放入最小堆，然后再把各个链表的next放入，直到取完。算法复杂度为O(nlgn)。
+    #+BEGIN_SRC python
+      class Solution(object):
+	  def mergeKLists(self, lists):
+	      if len(lists) == 0:
+		  return []
+	      heap = []
+	      for list in lists:
+		  if list:
+		      heap.append(list)
+	      for i in range(len(heap), 0, -1):
+		  self.adjustDown(heap, i-1)
+	      # for i, item in enumerate(heap)[::-1]:
+	      #     self.adjustDown(heap, i)
+
+	      head, tail = None, None
+	      while heap:
+		  node = ListNode(heap[0].val)
+		  if head is None:
+		      head = node
+		  else:
+		      tail.next = node
+		  tail = node
+		  heap[0] = heap[0].next
+		  if heap[0] is None:
+		      heap[0], heap[len(heap) - 1] = heap[len(heap) - 1], heap[0]
+		      heap.pop()
+		  if heap is not None:
+		      self.adjustDown(heap, 0)
+	      return head
+        
+	  def adjustDown(self, heap, i):
+	      length = len(heap)
+	      while i < length:
+		  left = i * 2 + 1
+		  right = i * 2 + 2
+		  min_pos = i
+		  if left < length and (heap[left].val < heap[min_pos].val):
+		      min_pos = left
+		  if right < length and (heap[right].val < heap[min_pos].val):
+		      min_pos = right
+		  if min_pos != i:
+		      heap[i], heap[min_pos] = heap[min_pos], heap[i]
+		      i = min_pos
+		  else:
+		      break
+        
+    #+END_SRC
