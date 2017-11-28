@@ -23,3 +23,36 @@ class Solution:
         dfs(0, [])
         return res
 #+END_SRC
+* 52: N-queens II
+** 介绍
+   这题是接上题存在的，不过不是输出皇后摆放结果，而是输出总共有多少种解法。
+** 思路
+** 代码
+   #+BEGIN_SRC python
+     class Solution:
+	 def totalNQueens(self, n):
+	     """
+	     :type n: int
+	     :rtype: int
+	     """
+	     res = 0
+	     global res
+	     board = [-1 for i in range(n)] # 保存所有皇后的位置
+	     # @return a list of lists of string
+	     def check(k, j):  # check if the kth queen can be put in column j!
+		 for i in range(k):
+		     if board[i] == j or abs(k-i) == abs(board[i] - j):
+			 return False
+		 return True
+	     def dfs(depth, valuelist):
+		 global res
+		 if depth == n:
+		     res = res + 1
+		 for i in range(n):
+		     if check(depth,i): 
+			 board[depth] = i
+			 s='.' * n
+			 dfs(depth + 1, valuelist + [s[:i] + 'Q' + s[i+1:]])
+	     dfs(0, [])
+	     return res
+   #+END_SRC
