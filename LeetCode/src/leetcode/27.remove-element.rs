@@ -3,18 +3,21 @@
  *
  * [27] Remove Element
  */
-struct Solution;
 
 // @lc code=start
 impl Solution {
     pub fn remove_element(nums: &mut Vec<i32>, val: i32) -> i32 {
-        // nums
-        // nums.count
-        2
+        let mut size = 0;
+        let mut index = 0;
+        while index < nums.len() {
+            if nums[index] != val {
+                nums[size] = nums[index];
+                size += 1;
+            }
+            index += 1;
+        }
+
+        return size as i32;
     }
 }
 // @lc code=end
-#[test]
-fn test() {
-    // assert_eq!(...);
-}
