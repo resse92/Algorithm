@@ -3,6 +3,7 @@
  *
  * [27] Remove Element
  */
+use super::util::solution::Solution;
 
 // @lc code=start
 impl Solution {

@@ -4,9 +4,7 @@
  * [25] Reverse Nodes in k-Group
  */
 
-use std::ops::Deref;
-
-struct Solution {}
+use super::util::solution::Solution;
 
 #[derive(PartialEq, Eq, Clone, Debug)]
 pub struct ListNode {

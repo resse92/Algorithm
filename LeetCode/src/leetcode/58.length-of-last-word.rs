@@ -3,7 +3,7 @@
  *
  * [58] Length of Last Word
  */
-
+use super::util::solution::Solution;
 // @lc code=start
 impl Solution {
     pub fn length_of_last_word(s: String) -> i32 {

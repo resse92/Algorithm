@@ -4,7 +4,7 @@
  * [516] Longest Palindromic Subsequence
  */
 
-struct Solution {}
+use super::util::solution::Solution;
 
 // @lc code=start
 impl Solution {
