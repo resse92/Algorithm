@@ -38,8 +38,7 @@ fn quick_sort(nums: &mut Vec<i32>) {
 
 #[test]
 fn test_quick_test() {
-    let mut nums: Vec<i32> = vec![3, 4, 9, 1, 2];
+    let mut nums: Vec<i32> = vec![3, 4, 9, 1, 5];
     quick_sort(&mut nums);
-    // assert!(nums == [1, 3, 4, 5, 9]);
-    println!("{:?}", nums);
+    assert!(nums == [1, 3, 4, 5, 9]);
 }
