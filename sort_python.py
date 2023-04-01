@@ -1,6 +1,3 @@
-#!/usr/bin/python
-#-*-coding:utf-8-*-
-
 # 排序算法
 
 # 冒泡排序
@@ -10,7 +7,7 @@ def exchange(array, index1, index2):
     # temp = array[index1]
     # array[index1] = array[index2]
     # array[index2] = temp
-    array[index1], array[index2] = array[index2], array[index1]
+    array[index1], array[index2] = array[index2], array[index1]    
 
 def bubble_sort1(numArray):
     x = 1
@@ -233,3 +230,8 @@ def main():
     print(ha)
 
 main()
+
+def reverseLeftWords(s: str, n: int) -> str:
+    l = len(s)
+    res = s[-n-1:] + s[0:l-n]
+    return res
