@@ -24,16 +24,19 @@ impl ListNode {
 
 impl Solution {
     pub fn reverse_k_group(head: Option<Box<ListNode>>, k: i32) -> Option<Box<ListNode>> {
+        // 创建一个虚拟head，最后返回head.next
         let mut dummy_head = Some(Box::new(ListNode { val: 0, next: head }));
         let mut head = dummy_head.as_mut();
 
         'outer: loop {
+            // 保存next
             let mut start = head.as_mut().unwrap().next.take();
             if start.is_none() {
                 break 'outer;
             }
 
             let mut end = start.as_mut();
+            // 找到k个尾结点，如果找不到，则说明链表长度不够，break
             for _ in 0..(k - 1) {
                 end = end.unwrap().next.as_mut();
                 if end.is_none() {
@@ -41,7 +44,7 @@ impl Solution {
                     break 'outer;
                 }
             }
-
+            // 尾结点next
             let mut tail = end.as_mut().unwrap().next.take();
             let end = Solution::reverse(start, tail);
             head.as_mut().unwrap().next = end;
