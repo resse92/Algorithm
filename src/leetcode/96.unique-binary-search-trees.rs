@@ -1,11 +1,10 @@
+use super::util::solution::Solution;
 use std::collections::HashMap;
-
 /*
  * @lc app=leetcode id=96 lang=rust
  *
  * [96] Unique Binary Search Trees
  */
-use super::util::solution::Solution;
 
 // @lc code=start
 impl Solution {
