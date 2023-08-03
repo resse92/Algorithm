@@ -1,6 +1,3 @@
-use core::num;
-use std::str::EncodeUtf16;
-
 fn sort(nums: &mut Vec<i32>, start: usize, mid: usize, end: usize) {
     let mut t = Vec::new();
     for i in start..=end {

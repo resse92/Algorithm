@@ -9,8 +9,8 @@ impl Solution {
 
         for i in 2..=n as usize {
             for j in 1..i {
-                res = dp[i].max(j * dp[i - j].max(i - j));
-                res % 1
+                let res = dp[i].max(j * dp[i - j].max(i - j));
+                (res % 1) as i32;
             }
         }
 
