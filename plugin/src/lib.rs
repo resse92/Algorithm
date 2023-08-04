@@ -16,8 +16,9 @@ pub async fn generate_leetcode(
             return Ok(());
         }
     };
-    let title =
-        leetcode::get_slug_from(&url).unwrap_or_else(|e| panic!("解析题目slug失败: {:?}", e));
+    let title = leetcode::get_slug_from(&url)
+        .unwrap_or_else(|e| panic!("解析题目slug失败: {:?}", e))
+        .replace("-", "_");
     let snippets = leetcode
         .get_code_snippets(url.clone())
         .await
@@ -88,6 +89,28 @@ pub async fn generate_leetcode(
 
     // 写入target_folder/filename
     std::fs::write(format!("{}/{}", target_folder, filename), content)?;
+
+    // 在src/leetcode/mod.rs中追加内容，格式如下:
+    // #[path = "leetcode111.rs"]\npub mod leetcode111;\n
+    let mut new_mod_content = format!(
+        "#[path = \"{}\"]\npub mod ___{};\n",
+        filename,
+        filename[0..filename.len() - 3].to_string()
+    );
+    let mod_rs_path = format!("{}/mod.rs", target_folder);
+    // 判断是否存在src/leetcode/mod.rs，如果不存在则创建
+    if !std::path::Path::new(mod_rs_path.as_str()).exists() {
+        std::fs::write(format!("{}/mod.rs", target_folder), "")?;
+    } else {
+        let mod_content_str = std::fs::read_to_string(mod_rs_path.clone())?;
+        if mod_content_str.contains(new_mod_content.as_str()) {
+            println!("文件{}已存在，跳过", filename);
+            return Ok(());
+        }
+        new_mod_content = format!("{}\n{}", mod_content_str, new_mod_content);
+        // 写入src/leetcode/mod.rs
+        std::fs::write(mod_rs_path.clone(), format!("{}", new_mod_content))?;
+    }
 
     Ok(())
 }

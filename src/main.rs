@@ -2,7 +2,7 @@ mod huawei_od;
 mod jianzhi_offer;
 // mod leetcode;
 mod sort;
-use std::collections::HashMap;
+// pub mod leetcode;
 
 use regex;
 
