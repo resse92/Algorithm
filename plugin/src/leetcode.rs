@@ -193,7 +193,6 @@ pub fn get_slug_from(s: &String) -> Result<String, Error> {
         .unwrap()
         .captures(s)
         .ok_or(Error::MatchError)?;
-    println!("capture: {:?}", capture);
     let slug = &capture[2];
     Ok(slug.to_string())
 }
