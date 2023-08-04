@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 use self::req::{Json, Mode, Req};
 
 use reqwest::{

@@ -5,3 +5,5 @@
 ## 基本情况
 
 本库根目录是一个rust项目，主要是希望用rust刷题的时候能够有提示，采用automod自动引用项目指定文件夹下的所有文件。
+
+可以使用`cargo run -- ${leetcode_problem_url}`自动生成对应文件

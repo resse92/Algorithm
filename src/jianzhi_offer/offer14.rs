@@ -1,8 +1,9 @@
-use std::io::Read;
+#[allow(dead_code)]
 
 struct Solution {}
 
 impl Solution {
+    #[allow(dead_code)]
     pub fn cutting_rope(n: i32) -> i32 {
         let mut dp = vec![0; (n + 1) as usize];
         dp[1] = 1;
@@ -17,6 +18,7 @@ impl Solution {
         dp[n as usize] as i32
     }
 
+    #[allow(dead_code)]
     pub fn cutting_rope1(n: i32) -> i32 {
         if n <= 3 {
             return n - 1;

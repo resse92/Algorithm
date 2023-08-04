@@ -4,22 +4,8 @@
  * [25] Reverse Nodes in k-Group
  */
 
-use super::util::list::ListNode;
+use super::util::link_list::ListNode;
 use super::util::solution::Solution;
-use super::util::tree::TreeNode;
-
-#[derive(PartialEq, Eq, Clone, Debug)]
-pub struct ListNode {
-    pub val: i32,
-    pub next: Option<Box<ListNode>>,
-}
-
-impl ListNode {
-    #[inline]
-    fn new(val: i32) -> Self {
-        ListNode { next: None, val }
-    }
-}
 
 // @lc code=start
 // Definition for singly-linked list.
@@ -47,7 +33,7 @@ impl Solution {
                 }
             }
             // 尾结点next
-            let mut tail = end.as_mut().unwrap().next.take();
+            let tail = end.as_mut().unwrap().next.take();
             let end = Solution::reverse(start, tail);
             head.as_mut().unwrap().next = end;
             for _ in 0..k {
@@ -59,14 +45,11 @@ impl Solution {
     }
 
     #[inline(always)]
-    fn reverse(
-        mut head: Option<Box<ListNode>>,
-        tail: Option<Box<ListNode>>,
-    ) -> Option<Box<ListNode>> {
+    fn reverse(head: Option<Box<ListNode>>, tail: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
         let mut prev = tail;
         let mut cur = head;
         while let Some(mut cur_node_inner) = cur {
-            let mut next = cur_node_inner.next.take();
+            let next = cur_node_inner.next.take();
             cur_node_inner.next = prev.take();
             prev = Some(cur_node_inner);
             cur = next;

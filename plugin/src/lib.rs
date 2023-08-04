@@ -1,8 +1,6 @@
 pub mod leetcode;
-use std::{error::Error, vec};
-
-use leetcode::LeetCode;
 use serde_json::Value;
+use std::{error::Error, vec};
 
 pub async fn generate_leetcode(
     url: String,

@@ -8,8 +8,7 @@ use super::util::solution::Solution;
 impl Solution {
     pub fn length_of_last_word(s: String) -> i32 {
         let mut size = s.len();
-        let str = s.as_str();
-        let mut length = 0;
+        let length = 0;
         while size > 0 {
             size -= 1;
         }

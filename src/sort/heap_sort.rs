@@ -1,5 +1,3 @@
-use core::num;
-
 // 构造大顶堆
 fn heapify(nums: &mut Vec<i32>, n: usize, i: usize) {
     let mut index = i;

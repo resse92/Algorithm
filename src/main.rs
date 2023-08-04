@@ -1,8 +1,9 @@
+#![allow(dead_code)]
 mod huawei_od;
 mod jianzhi_offer;
 // mod leetcode;
+pub mod leetcode;
 mod sort;
-// pub mod leetcode;
 
 use regex;
 

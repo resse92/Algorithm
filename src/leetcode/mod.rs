@@ -18,6 +18,7 @@ pub mod ___877_stone_game;
 pub mod ___969_pancake_sorting;
 #[path = "96_unique_binary_search_trees.rs"]
 pub mod ___96_unique_binary_search_trees;
+mod util;
 
 #[path = "416_partition_equal_subset_sum.rs"]
 pub mod ___416_partition_equal_subset_sum;

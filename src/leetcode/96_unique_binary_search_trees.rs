@@ -9,20 +9,22 @@ use std::collections::HashMap;
 // @lc code=start
 impl Solution {
     pub fn num_trees(n: i32) -> i32 {
-        let nums = (1..=n).collect::<Vec<i32>>();
+        // TOOD: not implemented yet
+        // let nums = (1..=n).collect::<Vec<i32>>();
 
-        let mut count = 0;
-        let mut cache = HashMap::new();
+        // let mut count = 0;
+        // let mut cache = HashMap::new();
 
-        fn helper(nums: Vec<i32>, start: i32, end: i32) -> i32 {
-            if n <= 1 {
-                return 1;
-            }
+        // fn helper(nums: Vec<i32>, start: i32, end: i32) -> i32 {
+        //     if n <= 1 {
+        //         return 1;
+        //     }
 
-            return helper(left) + helper(right);
-        }
+        //     return helper(left) + helper(right);
+        // }
 
-        return helper(nums, 0, n - 1);
+        // return helper(nums, 0, n - 1);
+        0
     }
 }
 // @lc code=end

@@ -1,11 +1,10 @@
 use super::util::solution::Solution;
 
+// https://leetcode.cn/problems/partition-equal-subset-sum/
 
-
-// https://leetcode.cn/problems/partition-equal-subset-sum/ 
-
- impl Solution {
+impl Solution {
     pub fn can_partition(nums: Vec<i32>) -> bool {
-
+        // TODO: not implemented yet
+        false
     }
 }
