@@ -22,3 +22,6 @@ mod util;
 
 #[path = "416_partition_equal_subset_sum.rs"]
 pub mod ___416_partition_equal_subset_sum;
+
+#[path = "200_number_of_islands.rs"]
+pub mod ___200_number_of_islands;
