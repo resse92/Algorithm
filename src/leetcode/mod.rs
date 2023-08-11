@@ -25,3 +25,6 @@ pub mod ___416_partition_equal_subset_sum;
 
 #[path = "200_number_of_islands.rs"]
 pub mod ___200_number_of_islands;
+
+#[path = "100_same_tree.rs"]
+pub mod ___100_same_tree;
