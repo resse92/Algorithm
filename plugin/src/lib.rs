@@ -57,22 +57,17 @@ pub async fn generate_leetcode(
     let filename = format!("{}_{}.{}", id, title, file_suffix);
     // 在target_folder下创建文件，写入代码片段，并在文件头部添加题目描述，同时引入use super::util::solution::Solution;
     let code = target_snippet["code"].as_str().unwrap_or("");
-    let mut names = vec!["Solution"];
+    let mut content = format!("use super::util::solution::Solution;\n\n",);
     // 判断代码中存在TreeNode的情况，在content顶部引入use super::util::solution::TreeNode;
     if code.contains("TreeNode") {
-        names.push("TreeNode");
+        content = format!("{}\nuse super::util::treenode::TreeNode;\n\n", content);
     }
 
     // 判断代码中存在ListNode的情况，在content顶部引入use super::util::solution::ListNode;
     if code.contains("ListNode") {
-        names.push("ListNode");
+        content = format!("{}\nuse super::util::listnode::ListNode;\n\n", content);
     }
-    let show_braces = names.len() > 1;
-    let mut content = format!(
-        "use super::util::solution::{}{};\n\n",
-        names.join(", "),
-        if show_braces { ";" } else { "" }
-    );
+
     // content顶部添加url方便跳转
     content = format!("{}\n\n// {}", content, url.clone());
 
@@ -108,6 +103,7 @@ pub async fn generate_leetcode(
         new_mod_content = format!("{}\n{}", mod_content_str, new_mod_content);
         // 写入src/leetcode/mod.rs
         std::fs::write(mod_rs_path.clone(), format!("{}", new_mod_content))?;
+        println!("生成文件{}成功", filename);
     }
 
     Ok(())
