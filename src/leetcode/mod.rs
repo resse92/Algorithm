@@ -28,3 +28,9 @@ pub mod ___200_number_of_islands;
 
 #[path = "100_same_tree.rs"]
 pub mod ___100_same_tree;
+
+#[path = "1_two_sum.rs"]
+pub mod ___1_two_sum;
+
+#[path = "51_n_queens.rs"]
+pub mod ___51_n_queens;
