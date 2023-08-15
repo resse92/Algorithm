@@ -34,7 +34,7 @@ impl Solution {
             }
             // 尾结点next
             let tail = end.as_mut().unwrap().next.take();
-            let end = Solution::reverse(start, tail);
+            let end = Solution::_reverse(start, tail);
             head.as_mut().unwrap().next = end;
             for _ in 0..k {
                 head = head.unwrap().next.as_mut()
@@ -45,7 +45,7 @@ impl Solution {
     }
 
     #[inline(always)]
-    fn reverse(head: Option<Box<ListNode>>, tail: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
+    fn _reverse(head: Option<Box<ListNode>>, tail: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
         let mut prev = tail;
         let mut cur = head;
         while let Some(mut cur_node_inner) = cur {

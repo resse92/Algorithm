@@ -32,5 +32,5 @@ pub mod ___100_same_tree;
 #[path = "1_two_sum.rs"]
 pub mod ___1_two_sum;
 
-#[path = "51_n_queens.rs"]
-pub mod ___51_n_queens;
+#[path = "7_reverse_integer.rs"]
+pub mod ___7_reverse_integer;
