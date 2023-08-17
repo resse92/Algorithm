@@ -34,3 +34,6 @@ pub mod ___1_two_sum;
 
 #[path = "7_reverse_integer.rs"]
 pub mod ___7_reverse_integer;
+
+#[path = "129_sum_root_to_leaf_numbers.rs"]
+pub mod ___129_sum_root_to_leaf_numbers;
