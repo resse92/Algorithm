@@ -40,3 +40,6 @@ pub mod ___129_sum_root_to_leaf_numbers;
 
 #[path = "18_4sum.rs"]
 pub mod ___18_4sum;
+
+#[path = "2384_root_equals_sum_of_children.rs"]
+pub mod ___2384_root_equals_sum_of_children;
