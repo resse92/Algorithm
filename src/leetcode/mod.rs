@@ -46,3 +46,6 @@ pub mod ___2384_root_equals_sum_of_children;
 
 #[path = "1939_queries_on_number_of_points_inside_a_circle.rs"]
 pub mod ___1939_queries_on_number_of_points_inside_a_circle;
+
+#[path = "1396_count_servers_that_communicate.rs"]
+pub mod ___1396_count_servers_that_communicate;
