@@ -52,3 +52,6 @@ pub mod ___1396_count_servers_that_communicate;
 
 #[path = "56_merge_intervals.rs"]
 pub mod ___56_merge_intervals;
+
+#[path = "57_insert_interval.rs"]
+pub mod ___57_insert_interval;
