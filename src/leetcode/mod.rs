@@ -58,3 +58,6 @@ pub mod ___57_insert_interval;
 
 #[path = "46_permutations.rs"]
 pub mod ___46_permutations;
+
+#[path = "852_friends_of_appropriate_ages.rs"]
+pub mod ___852_friends_of_appropriate_ages;
