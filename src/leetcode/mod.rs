@@ -64,3 +64,9 @@ pub mod ___852_friends_of_appropriate_ages;
 
 #[path = "1632_number_of_good_ways_to_split_a_string.rs"]
 pub mod ___1632_number_of_good_ways_to_split_a_string;
+
+#[path = "1800_concatenation_of_consecutive_binary_numbers.rs"]
+pub mod ___1800_concatenation_of_consecutive_binary_numbers;
+
+#[path = "287_find_the_duplicate_number.rs"]
+pub mod ___287_find_the_duplicate_number;
