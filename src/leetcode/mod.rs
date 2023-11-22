@@ -70,3 +70,6 @@ pub mod ___1800_concatenation_of_consecutive_binary_numbers;
 
 #[path = "287_find_the_duplicate_number.rs"]
 pub mod ___287_find_the_duplicate_number;
+
+#[path = "1184_car_pooling.rs"]
+pub mod ___1184_car_pooling;
