@@ -73,3 +73,6 @@ pub mod ___287_find_the_duplicate_number;
 
 #[path = "1184_car_pooling.rs"]
 pub mod ___1184_car_pooling;
+
+#[path = "2085_array_with_elements_not_equal_to_average_of_neighbors.rs"]
+pub mod ___2085_array_with_elements_not_equal_to_average_of_neighbors;
