@@ -7,8 +7,25 @@ mod sort;
 
 use regex;
 
-use clap::Parser;
+use clap::{Parser, ValueEnum};
 use plugin::generate_leetcode;
+
+#[derive(Copy, Clone, Debug, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
+enum Lang {
+    Rust,
+    Python,
+    Python3,
+}
+
+impl Lang {
+    fn as_str(&self) -> &'static str {
+        match self {
+            Lang::Rust => "rust",
+            Lang::Python => "python",
+            Lang::Python3 => "python3",
+        }
+    }
+}
 
 #[derive(Parser, Debug)]
 #[command(author="resse", version="0.0.1", about="auto generate file", long_about = None)]
@@ -16,8 +33,8 @@ pub struct Cli {
     // #[arg(short, long, default_value = "leetcode")]
     // source: Option<String>,
     url: String,
-    #[arg(short, long, default_value = "rust")]
-    lang: String,
+    #[clap(short, long, value_enum, default_value = "rust")] // arg_enum here
+    lang: Lang,
 }
 
 #[tokio::main]
@@ -36,7 +53,11 @@ async fn main() {
         return;
     }
 
-    generate_leetcode(url, "rust".to_string(), "src/leetcode".to_string())
-        .await
-        .unwrap_or_else(|e| panic!("生成leetcode文件失败: {:?}", e));
+    generate_leetcode(
+        url,
+        cli.lang.as_str().to_string(),
+        "src/leetcode".to_string(),
+    )
+    .await
+    .unwrap_or_else(|e| panic!("生成leetcode文件失败: {:?}", e));
 }
