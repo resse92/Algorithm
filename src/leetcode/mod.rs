@@ -76,3 +76,6 @@ pub mod ___1184_car_pooling;
 
 #[path = "2085_array_with_elements_not_equal_to_average_of_neighbors.rs"]
 pub mod ___2085_array_with_elements_not_equal_to_average_of_neighbors;
+
+#[path = "1400_construct_k_palindrome_strings.rs"]
+pub mod ___1400_construct_k_palindrome_strings;
