@@ -46,7 +46,7 @@ pub async fn generate_leetcode(
         .json::<Value>()
         .await?;
 
-    let id = match detail["data"]["question"]["questionId"].as_str() {
+    let id = match detail["data"]["question"]["questionFrontendId"].as_str() {
         Some(id) => id,
         None => panic!("获取题目id失败"),
     };

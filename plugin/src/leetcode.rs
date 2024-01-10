@@ -94,6 +94,7 @@ impl LeetCode {
                 "query getQuestionDetail($titleSlug: String!) {",
                 "  question(titleSlug: $titleSlug) {",
                 "    questionId",
+                "    questionFrontendId",
                 "    title",
                 "    content",
                 "    stats",
