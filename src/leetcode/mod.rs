@@ -79,3 +79,6 @@ pub mod ___2085_array_with_elements_not_equal_to_average_of_neighbors;
 
 #[path = "1400_construct_k_palindrome_strings.rs"]
 pub mod ___1400_construct_k_palindrome_strings;
+
+#[path = "2531_make_number_of_distinct_characters_equal.rs"]
+pub mod ___2531_make_number_of_distinct_characters_equal;
