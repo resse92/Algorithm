@@ -65,12 +65,13 @@ pub async fn generate_leetcode(
         // 在target_folder下创建文件，写入代码片段，并在文件头部添加题目描述，同时引入use super::util::solution::Solution;
         let mut content: String = format!("use super::util::solution::Solution;\n\n",);
         // 判断代码中存在TreeNode的情况，在content顶部引入use super::util::solution::TreeNode;
-        if content.should_import_treenode() {
+        if code.to_string().should_import_treenode() {
             content = format!("{}\nuse super::util::treenode::TreeNode;\n\n", content);
         }
 
         // 判断代码中存在ListNode的情况，在content顶部引入use super::util::solution::ListNode;
-        if content.should_import_listnode() {
+        if code.to_string().should_import_listnode() {
+            println!("是否引入listnode{:?}", content.should_import_listnode());
             content = format!("{}\nuse super::util::listnode::ListNode;\n\n", content);
         }
 

@@ -4,7 +4,7 @@
  * [25] Reverse Nodes in k-Group
  */
 
-use super::util::link_list::ListNode;
+use super::util::listnode::ListNode;
 use super::util::solution::Solution;
 
 // @lc code=start
