@@ -82,3 +82,6 @@ pub mod ___1400_construct_k_palindrome_strings;
 
 #[path = "2531_make_number_of_distinct_characters_equal.rs"]
 pub mod ___2531_make_number_of_distinct_characters_equal;
+
+#[path = "23_merge_k_sorted_lists.rs"]
+pub mod ___23_merge_k_sorted_lists;
