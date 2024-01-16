@@ -85,3 +85,6 @@ pub mod ___2531_make_number_of_distinct_characters_equal;
 
 #[path = "23_merge_k_sorted_lists.rs"]
 pub mod ___23_merge_k_sorted_lists;
+
+#[path = "2177_find_three_consecutive_integers_that_sum_to_a_given_number.rs"]
+pub mod ___2177_find_three_consecutive_integers_that_sum_to_a_given_number;
