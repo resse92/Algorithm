@@ -91,3 +91,6 @@ pub mod ___2177_find_three_consecutive_integers_that_sum_to_a_given_number;
 
 #[path = "2744_find_maximum_number_of_string_pairs.rs"]
 pub mod ___2744_find_maximum_number_of_string_pairs;
+
+#[path = "2471_minimum_number_of_operations_to_sort_a_binary_tree_by_level.rs"]
+pub mod ___2471_minimum_number_of_operations_to_sort_a_binary_tree_by_level;
