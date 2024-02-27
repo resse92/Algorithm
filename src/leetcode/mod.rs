@@ -94,3 +94,6 @@ pub mod ___2744_find_maximum_number_of_string_pairs;
 
 #[path = "2471_minimum_number_of_operations_to_sort_a_binary_tree_by_level.rs"]
 pub mod ___2471_minimum_number_of_operations_to_sort_a_binary_tree_by_level;
+
+#[path = "2476_closest_nodes_queries_in_a_binary_search_tree.rs"]
+pub mod ___2476_closest_nodes_queries_in_a_binary_search_tree;
