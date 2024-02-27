@@ -97,3 +97,6 @@ pub mod ___2471_minimum_number_of_operations_to_sort_a_binary_tree_by_level;
 
 #[path = "2476_closest_nodes_queries_in_a_binary_search_tree.rs"]
 pub mod ___2476_closest_nodes_queries_in_a_binary_search_tree;
+
+#[path = "2895_minimum_processing_time.rs"]
+pub mod ___2895_minimum_processing_time;
