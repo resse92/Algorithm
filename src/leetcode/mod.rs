@@ -100,3 +100,6 @@ pub mod ___2476_closest_nodes_queries_in_a_binary_search_tree;
 
 #[path = "2895_minimum_processing_time.rs"]
 pub mod ___2895_minimum_processing_time;
+
+#[path = "8_string_to_integer_atoi.rs"]
+pub mod ___8_string_to_integer_atoi;
