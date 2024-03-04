@@ -103,3 +103,6 @@ pub mod ___2895_minimum_processing_time;
 
 #[path = "8_string_to_integer_atoi.rs"]
 pub mod ___8_string_to_integer_atoi;
+
+#[path = "721_accounts_merge.rs"]
+pub mod ___721_accounts_merge;
